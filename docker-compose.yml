@@ -1,0 +1,25 @@
+# 像素社区 — 开发环境基础设施
+# MongoDB + Redis，用于本地开发
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: pixel-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: pixel-community
+
+  redis:
+    image: redis:7-alpine
+    container_name: pixel-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:

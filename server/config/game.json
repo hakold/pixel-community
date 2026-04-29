@@ -1,0 +1,64 @@
+{
+  "player": {
+    "initialLevel": 1,
+    "maxLevel": 100,
+    "initialLifeAttributes": {
+      "energy": 100,
+      "mood": 100,
+      "hunger": 100,
+      "health": 100,
+      "clean": 100,
+      "strength": 5,
+      "intelligence": 5,
+      "charm": 5
+    },
+    "initialBattleAttributes": {
+      "attack": 10,
+      "defense": 10,
+      "speed": 10,
+      "dodge": 5,
+      "maxHp": 100
+    },
+    "initialCurrency": {
+      "gold": 0,
+      "coupon": 0,
+      "achievementPoint": 0
+    },
+    "moodMultiplier": {
+      "terrible": 0.8,
+      "bad": 0.9,
+      "normal": 1.0,
+      "good": 1.1,
+      "excellent": 1.2
+    },
+    "moodThresholds": {
+      "terrible": 20,
+      "bad": 40,
+      "normal": 60,
+      "good": 80,
+      "excellent": 100
+    }
+  },
+
+  "attributeDecay": {
+    "energyDecayPerMinute": 0.2,
+    "hungerDecayPerMinute": 0.15,
+    "cleanDecayPerMinute": 0.1,
+    "moodDecayPerMinute": 0.05,
+    "healthDecayWhenStarving": 0.3,
+    "minAttributeValue": 0,
+    "maxAttributeValue": 100
+  },
+
+  "expCurve": {
+    "type": "exponential",
+    "baseExp": 100,
+    "growthFactor": 1.5
+  },
+
+  "action": {
+    "maxSimultaneousActions": 1,
+    "offlineMaxCycles": 100,
+    "collectionWindowMinutes": 5
+  }
+}

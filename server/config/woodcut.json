@@ -1,0 +1,47 @@
+[
+  {
+    "id": "woodcutting_pine",
+    "name": "伐松木",
+    "description": "砍伐普通松木",
+    "requirements": { "level": 1, "strength": 3 },
+    "duration": 300,
+    "rewards": {
+      "exp": 12,
+      "items": [
+        { "itemId": "pine_log", "count": 1, "weight": 100 }
+      ]
+    },
+    "energyCost": 8
+  },
+  {
+    "id": "woodcutting_oak",
+    "name": "伐橡木",
+    "description": "砍伐坚硬橡木",
+    "requirements": { "level": 8, "strength": 15 },
+    "duration": 600,
+    "rewards": {
+      "exp": 35,
+      "items": [
+        { "itemId": "oak_log", "count": 1, "weight": 70 },
+        { "itemId": "pine_log", "count": 2, "weight": 30 }
+      ]
+    },
+    "energyCost": 12
+  },
+  {
+    "id": "woodcutting_ebony",
+    "name": "伐黑檀木",
+    "description": "砍伐珍稀黑檀",
+    "requirements": { "level": 20, "strength": 35 },
+    "duration": 1800,
+    "rewards": {
+      "exp": 150,
+      "items": [
+        { "itemId": "ebony_log", "count": 1, "weight": 40 },
+        { "itemId": "oak_log", "count": 3, "weight": 40 },
+        { "itemId": "ancient_log", "count": 1, "weight": 20 }
+      ]
+    },
+    "energyCost": 20
+  }
+]

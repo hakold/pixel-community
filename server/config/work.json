@@ -1,0 +1,112 @@
+[
+  {
+    "id": "street_cleaner",
+    "name": "街道清洁工",
+    "category": "basic",
+    "description": "清扫街道",
+    "requirements": { "level": 1 },
+    "duration": 300,
+    "rewards": { "gold": 20, "exp": 10 },
+    "energyCost": 10
+  },
+  {
+    "id": "cafe_waiter",
+    "name": "咖啡店服务员",
+    "category": "basic",
+    "description": "在咖啡店端盘子",
+    "requirements": { "level": 2, "charm": 5 },
+    "duration": 300,
+    "rewards": { "gold": 35, "exp": 15 },
+    "energyCost": 12
+  },
+  {
+    "id": "delivery",
+    "name": "外卖配送员",
+    "category": "basic",
+    "description": "骑着电动车送外卖",
+    "requirements": { "level": 3, "strength": 5 },
+    "duration": 300,
+    "rewards": { "gold": 40, "exp": 18 },
+    "energyCost": 15
+  },
+  {
+    "id": "student_job",
+    "name": "勤工俭学",
+    "category": "education",
+    "description": "课余时间打零工",
+    "requirements": { "level": 3, "education": "elementary", "intelligence": 10 },
+    "duration": 600,
+    "rewards": { "gold": 80, "exp": 30 },
+    "energyCost": 15
+  },
+  {
+    "id": "tutor_job",
+    "name": "家教",
+    "category": "education",
+    "description": "给学弟补课赚零花钱",
+    "requirements": { "level": 8, "education": "middle_school", "intelligence": 20, "charm": 8 },
+    "duration": 900,
+    "rewards": { "gold": 180, "exp": 60 },
+    "energyCost": 18
+  },
+  {
+    "id": "intern_job",
+    "name": "企业实习",
+    "category": "education",
+    "description": "大公司的实习生岗位",
+    "requirements": { "level": 15, "education": "high_school", "intelligence": 35 },
+    "duration": 1800,
+    "rewards": { "gold": 400, "exp": 120 },
+    "energyCost": 22
+  },
+  {
+    "id": "office_job",
+    "name": "白领职员",
+    "category": "professional",
+    "description": "办公楼里的格子间生活",
+    "requirements": { "level": 25, "education": "college", "intelligence": 50 },
+    "duration": 1800,
+    "rewards": { "gold": 800, "exp": 200 },
+    "energyCost": 25
+  },
+  {
+    "id": "researcher_job",
+    "name": "研究员",
+    "category": "professional",
+    "description": "研究前沿课题",
+    "requirements": { "level": 25, "education": "college", "intelligence": 55 },
+    "duration": 3600,
+    "rewards": { "gold": 1200, "exp": 350 },
+    "energyCost": 28
+  },
+  {
+    "id": "scientist_job",
+    "name": "科学家",
+    "category": "elite",
+    "description": "进行科学研究",
+    "requirements": { "level": 40, "education": "graduate", "intelligence": 70 },
+    "duration": 3600,
+    "rewards": { "gold": 3000, "exp": 800 },
+    "energyCost": 32
+  },
+  {
+    "id": "professor_job",
+    "name": "大学教授",
+    "category": "elite",
+    "description": "教书育人",
+    "requirements": { "level": 60, "education": "phd", "intelligence": 90, "charm": 30 },
+    "duration": 7200,
+    "rewards": { "gold": 6000, "exp": 1500 },
+    "energyCost": 35
+  },
+  {
+    "id": "chief_scientist_job",
+    "name": "首席科学家",
+    "category": "elite",
+    "description": "国家级科研项目负责人",
+    "requirements": { "level": 60, "education": "phd", "intelligence": 95 },
+    "duration": 7200,
+    "rewards": { "gold": 10000, "exp": 2500 },
+    "energyCost": 40
+  }
+]
