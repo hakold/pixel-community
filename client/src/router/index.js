@@ -7,30 +7,14 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const Login = () => import('@/views/Login.vue');
 const Register = () => import('@/views/Register.vue');
 const Game = () => import('@/views/Game.vue');
+const MapEditor = () => import('@/views/MapEditor.vue');
 
 const routes = [
-  {
-    path: '/',
-    redirect: '/game',
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-    meta: { guest: true },
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register,
-    meta: { guest: true },
-  },
-  {
-    path: '/game',
-    name: 'Game',
-    component: Game,
-    meta: { requiresAuth: true },
-  },
+  { path: '/', redirect: '/game' },
+  { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
+  { path: '/register', name: 'Register', component: Register, meta: { guest: true } },
+  { path: '/game', name: 'Game', component: Game, meta: { requiresAuth: true } },
+  { path: '/editor', name: 'MapEditor', component: MapEditor, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

@@ -1,0 +1,59 @@
+{
+  "mapId": "house_01_interior",
+  "name": "一号小屋",
+  "grid": {
+    "width": 10,
+    "height": 10,
+    "tileWidth": 96,
+    "tileHeight": 48,
+    "blockHeight": 54,
+    "originOffsetX": 120,
+    "originOffsetY": 120
+  },
+  "player": {
+    "spawnX": 4,
+    "spawnY": 7,
+    "moveSpeedTilesPerSecond": 4.8
+  },
+  "legend": {
+    "g": "grass",
+    "r": "road",
+    "i": "interior",
+    "b": "building",
+    "d": "door"
+  },
+  "portals": [
+    {
+      "id": "house_01_exit",
+      "x": 4,
+      "y": 8,
+      "targetMapId": "town_square",
+      "targetX": 19,
+      "targetY": 18
+    }
+  ],
+  "dummies": [
+    {
+      "actorId": "npc_miya",
+      "nickname": "米娅",
+      "spawnX": 6,
+      "spawnY": 5,
+      "behavior": "patrol",
+      "patrolLoop": [{ "x": 6, "y": 5 }, { "x": 6, "y": 7 }, { "x": 3, "y": 7 }],
+      "bodyColor": "#8ec07c",
+      "hairColor": "#3a5a40"
+    }
+  ],
+  "tiles": [
+    ["b","b","b","b","b","b","b","b","b","b"],
+    ["b","i","i","i","i","i","i","i","i","b"],
+    ["b","i","i","i","i","i","i","i","i","b"],
+    ["b","i","i","i","i","i","i","i","i","b"],
+    ["b","i","i","i","i","i","i","i","i","b"],
+    ["b","i","i","i","i","i","i","i","i","b"],
+    ["b","i","i","i","i","i","i","i","i","b"],
+    ["b","i","i","i","i","i","i","i","i","b"],
+    ["b","b","b","b","d","b","b","b","b","b"],
+    ["g","g","g","g","r","g","g","g","g","g"]
+  ]
+}

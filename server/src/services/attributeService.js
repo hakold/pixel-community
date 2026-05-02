@@ -73,7 +73,7 @@ function applyAttributeDecay(player, elapsedMinutes) {
   const cfg = getGameConfig().attributeDecay;
   const attrs = player.lifeAttributes;
 
-  const clamp = (val) => Math.max(cfg.minAttributeValue, Math.min(cfg.maxAttributeValue, val));
+  const clamp = (val) => Math.round(Math.max(cfg.minAttributeValue, Math.min(cfg.maxAttributeValue, val)));
 
   attrs.energy = clamp(attrs.energy - decay.energy);
   attrs.hunger = clamp(attrs.hunger - decay.hunger);
@@ -162,7 +162,7 @@ function applyRewards(player, rewards, moodMultiplier = 1.0) {
     for (const [attr, value] of Object.entries(rewards.attributes)) {
       if (player.lifeAttributes[attr] !== undefined) {
         const gained = Math.floor(value * moodMultiplier);
-        player.lifeAttributes[attr] = Math.min(100, player.lifeAttributes[attr] + gained);
+        player.lifeAttributes[attr] = Math.round(Math.min(100, player.lifeAttributes[attr] + gained));
         result.attrGains[attr] = gained;
       }
     }

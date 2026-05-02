@@ -1,0 +1,31 @@
+{
+  "startMapId": "town_square",
+  "mapFiles": {
+    "town_square": "/api/maps/town_square",
+    "house_01_interior": "/api/maps/house_01_interior"
+  },
+  "player": {
+    "baseMoveSpeedTilesPerSecond": 5,
+    "selfBodyColor": "#d36945",
+    "selfHairColor": "#6a3f30"
+  },
+  "dummy": {
+    "defaultMoveSpeedTilesPerSecond": 2.5,
+    "patrolPauseSeconds": 0.9,
+    "bodyPalette": [
+      "#6ea4bf",
+      "#e07a5f",
+      "#a06cd5",
+      "#8ec07c"
+    ],
+    "hairPalette": [
+      "#2f4858",
+      "#5c4033",
+      "#5a189a",
+      "#3a5a40"
+    ]
+  },
+  "visuals": {
+    "showActorLabels": true
+  }
+}

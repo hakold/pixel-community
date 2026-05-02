@@ -3,14 +3,10 @@
  * 所有请求使用 axios，自动携带 JWT Token
  */
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
 
-// 根据运行环境选择 API 地址
-// Electron 开发模式使用 Vite 代理，生产模式直连
-const BASE_URL = import.meta.env.DEV ? '/api' : 'http://localhost:3000/api';
-
-// 创建 axios 实例
 const http = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

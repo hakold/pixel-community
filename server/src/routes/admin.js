@@ -6,6 +6,7 @@
  */
 const express = require('express');
 const adminController = require('../controllers/adminController');
+const mapController = require('../controllers/mapController');
 
 const router = express.Router();
 
@@ -14,5 +15,11 @@ router.get('/config/status', adminController.getConfigStatus);
 router.post('/config/reload', adminController.reloadAllConfigs);
 router.post('/config/reload/:namespace', adminController.reloadOneConfig);
 router.get('/config/:namespace', adminController.getConfigByNamespace);
+
+// 地图管理
+router.get('/maps', mapController.listMaps);
+router.get('/maps/:mapId', mapController.adminGetMap);
+router.post('/maps', mapController.saveMap);
+router.delete('/maps/:mapId', mapController.deleteMap);
 
 module.exports = router;

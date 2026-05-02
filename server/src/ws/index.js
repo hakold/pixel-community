@@ -135,6 +135,10 @@ function routeMessage(ws, wss, message) {
       handleMove(ws, wss, payload);
       break;
 
+    case 'chat':
+      handleChat(ws, wss, payload);
+      break;
+
     default:
       sendTo(ws, 'error', { message: `未知消息类型: ${type}` });
   }
@@ -214,6 +218,28 @@ function handleMove(ws, wss, payload) {
     x: updated.x,
     y: updated.y,
     state: updated.state,
+  }, ws.playerId);
+}
+
+/**
+ * 聊天消息
+ * payload: { message }
+ */
+function handleChat(ws, wss, payload) {
+  if (!payload || !payload.message || !payload.message.trim()) {
+    return sendTo(ws, 'error', { message: '消息不能为空' });
+  }
+
+  const roomId = roomManager.getPlayerRoom(ws.playerId);
+  if (!roomId) {
+    return sendTo(ws, 'error', { message: '你不在任何房间中，无法发送消息' });
+  }
+
+  broadcastToRoom(wss, roomId, 'chat_broadcast', {
+    playerId: ws.playerId,
+    characterName: ws.characterName,
+    message: payload.message.trim(),
+    time: Date.now(),
   }, ws.playerId);
 }
 

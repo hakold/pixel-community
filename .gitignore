@@ -10,6 +10,7 @@ server/dist/
 
 # Claude Code 内部数据
 .claude/
+cc_uselog.md
 
 # 系统文件
 .DS_Store
