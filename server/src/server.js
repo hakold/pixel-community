@@ -9,6 +9,7 @@ const config = require('./config');
 const configManager = require('./config/configManager');
 const { connectMongoDB, connectRedis, closeConnections } = require('./config/db');
 const { initWebSocket } = require('./ws');
+const regenService = require('./services/regenService');
 
 // 全局 Redis 实例引用（后续模块通过此处获取）
 let redis = null;
@@ -41,11 +42,15 @@ async function start() {
     console.log(`  HTTP:  http://${config.server.host}:${config.server.port}`);
     console.log(`  WS:    ws://${config.server.host}:${config.server.port}`);
     console.log('════════════════════════════════════════');
+
+    // 启动全局精力回复定时器
+    regenService.start();
   });
 
   // 6. 优雅退出
   process.on('SIGINT', async () => {
     console.log('\n正在关闭服务...');
+    regenService.stop();
     await closeConnections(redis);
     process.exit(0);
   });

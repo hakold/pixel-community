@@ -12,6 +12,40 @@ const { WebSocketServer } = require('ws');
 const config = require('../config');
 const roomManager = require('./roomManager');
 
+/** 全局 WebSocketServer 引用，供 sendToPlayer 等推送接口使用 */
+let _wss = null;
+
+/**
+ * 向指定玩家发送消息（供外部服务调用）
+ * @param {string} playerId
+ * @param {string} type
+ * @param {Object} payload
+ */
+function sendToPlayer(playerId, type, payload) {
+  if (!_wss) return;
+  const data = JSON.stringify({ type, payload });
+  _wss.clients.forEach((client) => {
+    if (client.playerId === playerId && client.readyState === 1) {
+      client.send(data);
+    }
+  });
+}
+
+/**
+ * 向所有在线玩家发送消息（供 regen 等全局事件使用）
+ * @param {string} type
+ * @param {Object} payload
+ */
+function broadcastToAll(type, payload) {
+  if (!_wss) return;
+  const data = JSON.stringify({ type, payload });
+  _wss.clients.forEach((client) => {
+    if (client.readyState === 1) {
+      client.send(data);
+    }
+  });
+}
+
 /**
  * 初始化 WebSocket 服务
  * @param {import('http').Server} httpServer - HTTP Server 实例
@@ -19,6 +53,7 @@ const roomManager = require('./roomManager');
  */
 function initWebSocket(httpServer) {
   const wss = new WebSocketServer({ server: httpServer });
+  _wss = wss;
 
   wss.on('connection', (ws, req) => {
     console.log(`[WS] 收到连接: ip=${req.socket.remoteAddress || 'unknown'} url=${req.url || '/'}`);
@@ -305,4 +340,4 @@ function extractToken(req) {
   return params.get('token') || null;
 }
 
-module.exports = { initWebSocket };
+module.exports = { initWebSocket, sendToPlayer, broadcastToAll };

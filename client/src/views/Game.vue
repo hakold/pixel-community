@@ -76,10 +76,10 @@
         <div class="panel-block">
           <h3>战斗属性</h3>
           <div class="info-grid">
-            <div class="info-item"><span class="label">攻击</span><span class="value">{{ userStore.player?.battleAttributes?.attack }}</span></div>
-            <div class="info-item"><span class="label">防御</span><span class="value">{{ userStore.player?.battleAttributes?.defense }}</span></div>
-            <div class="info-item"><span class="label">速度</span><span class="value">{{ userStore.player?.battleAttributes?.speed }}</span></div>
-            <div class="info-item"><span class="label">生命</span><span class="value">{{ userStore.player?.battleAttributes?.hp }} / {{ userStore.player?.battleAttributes?.maxHp }}</span></div>
+            <div class="info-item"><span class="label">攻击</span><span class="value">{{ Math.round(userStore.player?.battleAttributes?.attack ?? 0) }}</span></div>
+            <div class="info-item"><span class="label">防御</span><span class="value">{{ Math.round(userStore.player?.battleAttributes?.defense ?? 0) }}</span></div>
+            <div class="info-item"><span class="label">速度</span><span class="value">{{ Math.round(userStore.player?.battleAttributes?.speed ?? 0) }}</span></div>
+            <div class="info-item"><span class="label">生命</span><span class="value">{{ Math.round(userStore.player?.battleAttributes?.hp ?? 0) }} / {{ Math.round(userStore.player?.battleAttributes?.maxHp ?? 0) }}</span></div>
           </div>
         </div>
 
@@ -92,8 +92,9 @@
           <span class="map-name">{{ mapStatus.mapName }}</span>
           <span class="map-coords">{{ mapStatus.playerPosition }}</span>
           <span class="map-path">{{ mapStatus.pathInfo }}</span>
+          <button v-if="activeZone && popupHidden" class="map-zone-toggle" @click="showPopup">📍 {{ activeZone.label }}</button>
         </div>
-        <ActionPopup :zone="activeZone" @start="onActionStarted" />
+        <ActionPopup :zone="popupZone" @start="onActionStarted" @close="hidePopup" />
       </section>
 
       <!-- 右侧聊天室 -->
@@ -242,7 +243,11 @@ const actionStore = useActionStore();
 const currentRoom = ref('');
 const mapStatus = ref(null);
 const activeZone = ref(null);
-let zoneSuppressed = false;
+const popupHidden = ref(false);
+const popupZone = computed(() => (activeZone.value && !popupHidden.value) ? activeZone.value : null);
+
+function showPopup() { popupHidden.value = false; }
+function hidePopup() { popupHidden.value = true; }
 
 // 聊天
 const gameCanvasRef = ref(null);
@@ -455,14 +460,21 @@ function onMapStatus(s) {
 }
 
 function onActionZone(zone) {
-  if (zoneSuppressed && zone) return;
-  if (!zone) zoneSuppressed = false;
+  if (!zone) {
+    activeZone.value = null;
+    popupHidden.value = false;
+    return;
+  }
+  // 进入新区域时自动展示
+  if (!activeZone.value || activeZone.value.id !== zone.id) {
+    popupHidden.value = false;
+  }
   activeZone.value = zone;
 }
 
 function onActionStarted() {
-  zoneSuppressed = true;
   activeZone.value = null;
+  popupHidden.value = true;
   startLocalProgress();
 }
 
@@ -484,7 +496,8 @@ onUnmounted(() => {
 
 // ---------- 工具函数 ----------
 function attr(key) {
-  return userStore.player?.lifeAttributes?.[key] ?? 0;
+  const v = userStore.player?.lifeAttributes?.[key];
+  return v != null ? Math.round(v) : 0;
 }
 
 function handleLogout() {
@@ -768,6 +781,20 @@ function formatClock(seconds) {
   margin-left: auto;
 }
 
+.map-zone-toggle {
+  pointer-events: auto;
+  margin-left: 8px;
+  padding: 2px 10px;
+  font-size: 11px;
+  color: #f0c040;
+  background: rgba(240, 192, 64, 0.12);
+  border: 1px solid rgba(240, 192, 64, 0.25);
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.map-zone-toggle:hover { background: rgba(240, 192, 64, 0.22); }
+
 /* ===== 右侧聊天室 ===== */
 .chat-panel {
   width: 100%;
@@ -853,9 +880,9 @@ function formatClock(seconds) {
 
 /* ===== 底部挂机状态条 ===== */
 .status-bar {
-  height: 150px;
+  height: 200px;
   flex-shrink: 0;
-  padding: 12px;
+  padding: 8px 12px;
   background: rgba(0, 0, 0, 0.26);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -863,7 +890,7 @@ function formatClock(seconds) {
 .status-strip {
   height: 100%;
   min-width: 0;
-  padding: 12px 16px;
+  padding: 8px 16px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03)),
     linear-gradient(90deg, rgba(13, 21, 38, 0.92), rgba(22, 38, 66, 0.92));
@@ -871,7 +898,7 @@ function formatClock(seconds) {
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   overflow: hidden;
 }
 
@@ -935,7 +962,7 @@ function formatClock(seconds) {
 .status-stage {
   position: relative;
   flex: 1;
-  min-height: 0;
+  min-height: 60px;
   border-radius: 6px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.05);

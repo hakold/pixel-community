@@ -56,8 +56,13 @@ export const useActionStore = defineStore('action', () => {
     try {
       const data = await actionApi.getStatus();
       currentTask.value = data;
-    } catch (err) {
-      currentTask.value = null;
+    } catch {
+      // 网络抖动时不覆盖已获取的任务状态
+      if (currentTask.value && currentTask.value.hasTask) {
+        // 保留现有状态，等下次轮询成功再更新
+      } else {
+        currentTask.value = null;
+      }
     }
   }
 
@@ -71,14 +76,29 @@ export const useActionStore = defineStore('action', () => {
     error.value = '';
     try {
       const data = await actionApi.startAction(actionType, actionId);
+      // 从创建响应立即构建任务状态（不依赖后续 getStatus）
+      const config = actionList.value[actionType]?.find(a => a.id === actionId);
+      currentTask.value = {
+        hasTask: true,
+        task: {
+          id: data.task?._id,
+          actionType,
+          actionId,
+          actionName: config?.name || actionId,
+          startTime: data.task?.startTime || new Date().toISOString(),
+          duration: data.task?.duration || 0,
+          elapsed: 0,
+          remaining: data.task?.duration || 0,
+          progress: 0,
+          isComplete: false,
+        },
+      };
       // 更新玩家状态（精力已消耗）
       const userStore = useUserStore();
       if (data.player) {
         userStore.player = data.player;
         localStorage.setItem('player', JSON.stringify(data.player));
       }
-      // 刷新任务状态
-      await fetchTaskStatus();
       startPolling();
       return data;
     } catch (err) {
@@ -133,7 +153,7 @@ export const useActionStore = defineStore('action', () => {
     }
   }
 
-  /** 开始轮询任务进度（每秒更新） */
+  /** 开始轮询任务进度（每 5 秒一次） */
   function startPolling() {
     stopPolling();
     pollTimer = setInterval(async () => {
@@ -144,7 +164,10 @@ export const useActionStore = defineStore('action', () => {
           stopPolling();
         }
       } catch {
-        stopPolling();
+        // 网络波动不停止轮询，保留现有状态
+        if (!currentTask.value || !currentTask.value.hasTask) {
+          stopPolling();
+        }
       }
     }, 5000);
   }

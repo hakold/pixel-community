@@ -146,14 +146,14 @@ function applyRewards(player, rewards, moodMultiplier = 1.0) {
   // 经验
   if (rewards.exp) {
     const gained = Math.floor(rewards.exp * moodMultiplier);
-    player.exp += gained;
+    player.exp = Math.round(player.exp + gained);
     result.expGained = gained;
   }
 
   // 金币
   if (rewards.gold) {
     const gained = Math.floor(rewards.gold * moodMultiplier);
-    player.currency.gold += gained;
+    player.currency.gold = Math.round(player.currency.gold + gained);
     result.goldGained = gained;
   }
 

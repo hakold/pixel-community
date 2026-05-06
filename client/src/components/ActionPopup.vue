@@ -6,7 +6,11 @@
         <span class="zone-icon">{{ zoneIcon }}</span>
         <span class="zone-name">{{ zone?.label || '' }}</span>
         <span class="zone-type">{{ typeLabel(zone?.actionType) }}</span>
+        <button class="popup-close" @click="emit('close')" title="关闭">✕</button>
       </div>
+
+      <!-- 错误提示 -->
+      <div v-if="actionError" class="action-error">{{ actionError }}</div>
 
       <!-- 已有任务提示 -->
       <div v-if="actionStore.hasTask" class="busy-hint">
@@ -36,10 +40,10 @@
           </div>
           <button
             class="btn-start-action"
-            :disabled="!checkReqs(item).valid"
+            :disabled="!checkReqs(item).valid || startingId === item.id"
             @click="handleStart(item)"
           >
-            {{ !checkReqs(item).valid ? checkReqs(item).reason : '开始' }}
+            {{ startingId === item.id ? '...' : (!checkReqs(item).valid ? checkReqs(item).reason : '开始') }}
           </button>
         </div>
 
@@ -53,7 +57,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, watch } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import { useActionStore } from '@/stores/action';
 import { useUserStore } from '@/stores/user';
 
@@ -61,10 +65,12 @@ const props = defineProps({
   zone: { type: Object, default: null }
 });
 
-const emit = defineEmits(['start']);
+const emit = defineEmits(['start', 'close']);
 
 const actionStore = useActionStore();
 const userStore = useUserStore();
+
+const actionError = ref('');
 
 const visible = computed(() => !!props.zone);
 
@@ -127,14 +133,23 @@ function checkReqs(item) {
 
 // ---------- 操作 ----------
 
+let startingId = null;
+
 async function handleStart(item) {
+  actionError.value = '';
+  startingId = item.id;
   try {
     await actionStore.startAction(props.zone.actionType, item.id);
     emit('start');
   } catch {
-    // store 已处理
+    actionError.value = actionStore.error || '开始失败，请重试';
+  } finally {
+    startingId = null;
   }
 }
+
+// 关闭/切换区域时清除错误
+watch(visible, (v) => { if (!v) actionError.value = ''; });
 
 // ---------- 格式化 ----------
 
@@ -171,13 +186,13 @@ function formatTime(seconds) {
 
 .action-popup {
   pointer-events: auto;
-  width: 320px;
-  max-height: 420px;
+  width: 340px;
+  max-height: 440px;
   overflow-y: auto;
   background: rgba(26, 26, 46, 0.96);
   border: 1px solid rgba(233, 69, 96, 0.25);
   border-radius: 10px;
-  padding: 16px;
+  padding: 18px 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
@@ -189,6 +204,22 @@ function formatTime(seconds) {
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
+
+.popup-close {
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.popup-close:hover { color: #e94560; background: rgba(233, 69, 96, 0.15); }
 
 .zone-icon { font-size: 20px; }
 
@@ -205,6 +236,17 @@ function formatTime(seconds) {
   border-radius: 4px;
   color: #e94560;
   margin-left: auto;
+}
+
+/* 错误提示 */
+.action-error {
+  font-size: 11px;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 8px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 /* 已有任务 */

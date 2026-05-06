@@ -163,6 +163,25 @@ function handleNetworkEvent(msg) {
       emit('chat', msg.payload);
       break;
 
+    case 'attributes_sync': {
+      const sync = msg.payload;
+      if (sync) {
+        const userStore = useUserStore();
+        if (userStore.player) {
+          if (sync.lifeAttributes) {
+            Object.assign(userStore.player.lifeAttributes, sync.lifeAttributes);
+          }
+          if (sync.exp !== undefined) userStore.player.exp = sync.exp;
+          if (sync.currency) {
+            Object.assign(userStore.player.currency, sync.currency);
+          }
+          // 持久化
+          localStorage.setItem('player', JSON.stringify(userStore.player));
+        }
+      }
+      break;
+    }
+
     case 'disconnected':
       console.debug('[WS][client] disconnected', { currentRoom });
       roomSyncPending = !!currentRoom;

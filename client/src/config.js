@@ -8,9 +8,12 @@
 
 /** 后端 HTTP 地址（开发默认跟随当前页面主机名） */
 const DEV_SERVER_PORT = import.meta.env.VITE_SERVER_PORT || '3000';
-const DEV_SERVER_HOST = window.location.hostname === 'localhost'
-  ? '127.0.0.1'
-  : window.location.hostname;
+const DEV_SERVER_HOST = (() => {
+  const h = window.location.hostname;
+  // 0.0.0.0 是监听地址，不能作为连接目标；localhost 在 Win11 上优先解析 IPv6
+  if (h === '0.0.0.0' || h === 'localhost') return '127.0.0.1';
+  return h;
+})();
 const DEV_SERVER_URL = `${window.location.protocol}//${DEV_SERVER_HOST}:${DEV_SERVER_PORT}`;
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || (import.meta.env.DEV ? DEV_SERVER_URL : 'http://localhost:3000');
 

@@ -10,6 +10,7 @@ const ActionTask = require('../models/ActionTask');
 const Player = require('../models/Player');
 const { getActionConfig, getGameConfig } = require('../config/gameConfig');
 const attributeService = require('./attributeService');
+const { sendToPlayer } = require('../ws');
 
 // 有效的行为类型
 const VALID_ACTION_TYPES = ['study', 'work', 'mining', 'woodcut', 'fishing'];
@@ -65,7 +66,7 @@ async function startAction(playerId, actionType, actionId) {
 
   // 消耗精力
   if (config.energyCost) {
-    player.lifeAttributes.energy = Math.max(0, player.lifeAttributes.energy - config.energyCost);
+    player.lifeAttributes.energy = Math.round(Math.max(0, player.lifeAttributes.energy - config.energyCost));
   }
 
   // 创建任务 — 核心：记录开始时间和持续时长
@@ -84,6 +85,11 @@ async function startAction(playerId, actionType, actionId) {
   });
 
   await player.save();
+
+  // 实时推送最新属性（精力已扣除）
+  sendToPlayer(player._id.toString(), 'attributes_sync', {
+    lifeAttributes: player.lifeAttributes,
+  });
 
   return { task, player };
 }
@@ -188,6 +194,13 @@ async function collectAction(playerId) {
   task.completedCycles += 1;
   await task.save();
   await player.save();
+
+  // 实时推送最新属性（衰减+奖励已应用）
+  sendToPlayer(player._id.toString(), 'attributes_sync', {
+    lifeAttributes: player.lifeAttributes,
+    exp: player.exp,
+    currency: { gold: player.currency.gold },
+  });
 
   return {
     actionType: task.actionType,

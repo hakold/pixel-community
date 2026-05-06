@@ -162,6 +162,14 @@ function getStats() {
 }
 
 /**
+ * 获取所有在线玩家 ID 列表
+ * @returns {Array<string>}
+ */
+function getAllOnlinePlayerIds() {
+  return Array.from(playerRooms.keys());
+}
+
+/**
  * 移除所有玩家的在线状态（服务关闭时调用）
  * @returns {Array<string>} 所有被移除的 playerId
  */
@@ -180,6 +188,7 @@ module.exports = {
   getPlayerRoom,
   getPlayerState,
   getRoomPlayers,
+  getAllOnlinePlayerIds,
   getStats,
   clearAll,
 };

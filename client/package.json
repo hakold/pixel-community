@@ -4,9 +4,9 @@
   "description": "《像素社区》游戏客户端",
   "main": "electron/main.js",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host=0.0.0.0",
     "build": "vite build",
-    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://0.0.0.0:5173 && electron .\"",
     "electron:build": "vite build && electron-builder",
     "preview": "vite preview"
   },
