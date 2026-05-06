@@ -7,13 +7,15 @@ export function createNetworkManager({ url, token, onEvent }) {
   let reconnectTimer = null;
   let reconnectAttempts = 0;
   const MAX_RECONNECT_DELAY = 10000;
+  const pendingMessages = [];
 
   function connect() {
     ws = new WebSocket(url);
 
     ws.onopen = () => {
       reconnectAttempts = 0;
-      onEvent({ type: 'connected' });
+      const flushedPendingMessages = flushPendingMessages();
+      onEvent({ type: 'connected', flushedPendingMessages });
     };
 
     ws.onmessage = (event) => {
@@ -48,7 +50,11 @@ export function createNetworkManager({ url, token, onEvent }) {
   function send(type, payload = {}) {
     if (ws && ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({ type, payload }));
+      return true;
     }
+
+    pendingMessages.push({ type, payload });
+    return false;
   }
 
   function disconnect() {
@@ -67,4 +73,14 @@ export function createNetworkManager({ url, token, onEvent }) {
   connect();
 
   return { send, disconnect };
+
+  function flushPendingMessages() {
+    let flushed = false;
+    while (pendingMessages.length && ws && ws.readyState === WebSocket.OPEN) {
+      const message = pendingMessages.shift();
+      ws.send(JSON.stringify(message));
+      flushed = true;
+    }
+    return flushed;
+  }
 }

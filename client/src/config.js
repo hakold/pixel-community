@@ -6,8 +6,13 @@
  * 生产部署时，Vite 在 build 阶段将这些值编译为静态常量。
  */
 
-/** 后端 HTTP 地址（开发: http://localhost:3000） */
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+/** 后端 HTTP 地址（开发默认跟随当前页面主机名） */
+const DEV_SERVER_PORT = import.meta.env.VITE_SERVER_PORT || '3000';
+const DEV_SERVER_HOST = window.location.hostname === 'localhost'
+  ? '127.0.0.1'
+  : window.location.hostname;
+const DEV_SERVER_URL = `${window.location.protocol}//${DEV_SERVER_HOST}:${DEV_SERVER_PORT}`;
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || (import.meta.env.DEV ? DEV_SERVER_URL : 'http://localhost:3000');
 
 /** HTTP API 前缀（dev 模式走 Vite proxy，prod 直连） */
 export const API_BASE_URL = import.meta.env.DEV ? '/api' : `${SERVER_URL}/api`;

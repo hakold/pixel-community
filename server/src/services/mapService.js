@@ -6,12 +6,24 @@ const fs = require('fs');
 const path = require('path');
 
 const MAPS_DIR = path.join(__dirname, '..', '..', 'config', 'maps');
+const MAP_ID_RE = /^[A-Za-z0-9_-]+$/;
 
 /** 确保存储目录存在 */
 function ensureDir() {
   if (!fs.existsSync(MAPS_DIR)) {
     fs.mkdirSync(MAPS_DIR, { recursive: true });
   }
+}
+
+function validateMapId(mapId) {
+  if (!MAP_ID_RE.test(mapId)) {
+    throw new Error('地图 ID 格式无效');
+  }
+}
+
+function getMapFilepath(mapId) {
+  validateMapId(mapId);
+  return path.join(MAPS_DIR, `${mapId}.json`);
 }
 
 /**
@@ -40,7 +52,7 @@ function listMaps() {
  */
 function getMap(mapId) {
   ensureDir();
-  const filepath = path.join(MAPS_DIR, `${mapId}.json`);
+  const filepath = getMapFilepath(mapId);
   if (!fs.existsSync(filepath)) return null;
   return JSON.parse(fs.readFileSync(filepath, 'utf-8'));
 }
@@ -54,7 +66,7 @@ function saveMap(mapConfig) {
   ensureDir();
   const mapId = mapConfig.mapId;
   if (!mapId) throw new Error('地图配置缺少 mapId');
-  const filepath = path.join(MAPS_DIR, `${mapId}.json`);
+  const filepath = getMapFilepath(mapId);
   fs.writeFileSync(filepath, JSON.stringify(mapConfig, null, 2), 'utf-8');
   return { ok: true, mapId };
 }
@@ -66,7 +78,7 @@ function saveMap(mapConfig) {
  */
 function deleteMap(mapId) {
   ensureDir();
-  const filepath = path.join(MAPS_DIR, `${mapId}.json`);
+  const filepath = getMapFilepath(mapId);
   if (!fs.existsSync(filepath)) return { ok: false, message: '地图不存在' };
   fs.unlinkSync(filepath);
   return { ok: true };

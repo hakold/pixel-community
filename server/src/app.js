@@ -12,6 +12,9 @@ const app = express();
 
 // --------------- 全局中间件 ---------------
 
+// 仅信任来自本机回环地址的代理转发头
+app.set('trust proxy', 'loopback');
+
 // CORS 跨域
 app.use(cors());
 

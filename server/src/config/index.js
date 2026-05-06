@@ -12,6 +12,7 @@ const config = {
   // 服务配置
   server: {
     port: parseInt(process.env.PORT, 10) || 3000,
+    host: process.env.SERVER_HOST || 'localhost',
   },
 
   // MongoDB 配置

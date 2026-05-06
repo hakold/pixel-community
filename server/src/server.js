@@ -35,11 +35,11 @@ async function start() {
   initWebSocket(httpServer);
 
   // 5. 启动监听
-  httpServer.listen(config.server.port, () => {
+  httpServer.listen(config.server.port, config.server.host,() => {
     console.log('════════════════════════════════════════');
     console.log('  《像素社区》后端服务');
-    console.log(`  HTTP:  http://localhost:${config.server.port}`);
-    console.log(`  WS:    ws://localhost:${config.server.port}`);
+    console.log(`  HTTP:  http://${config.server.host}:${config.server.port}`);
+    console.log(`  WS:    ws://${config.server.host}:${config.server.port}`);
     console.log('════════════════════════════════════════');
   });
 

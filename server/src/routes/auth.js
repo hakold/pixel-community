@@ -4,12 +4,13 @@
 const express = require('express');
 const authController = require('../controllers/authController');
 const authMiddleware = require('../middleware/auth');
+const { authRateLimit } = require('../middleware/rateLimit');
 
 const router = express.Router();
 
 // 公开接口
-router.post('/register', authController.register);
-router.post('/login', authController.login);
+router.post('/register', authRateLimit, authController.register);
+router.post('/login', authRateLimit, authController.login);
 
 // 需认证
 router.get('/me', authMiddleware, authController.getMe);

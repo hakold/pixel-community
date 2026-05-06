@@ -23,6 +23,15 @@ const PADDING = 8;
 let gameApp = null;
 let network = null;
 let resizeObserver = null;
+let currentRoom = null;
+let roomSyncPending = false;
+
+function syncCurrentRoom() {
+  if (network && currentRoom) {
+    console.debug('[WS][client] syncCurrentRoom', currentRoom);
+    roomSyncPending = !network.send('join_room', currentRoom);
+  }
+}
 
 function applyCanvasSize() {
   const container = wrapper.value;
@@ -86,8 +95,13 @@ onMounted(async () => {
         if (network) network.send('move', { x: pos.x, y: pos.y, state: 'move' });
       },
       onMapChange: (evt) => {
-        if (evt.type === 'enter' && network) {
-          network.send('join_room', { roomId: evt.mapId, x: evt.x, y: evt.y });
+        if (evt.type === 'enter') {
+          currentRoom = { roomId: evt.mapId, x: evt.x, y: evt.y };
+          roomSyncPending = true;
+          syncCurrentRoom();
+        } else if (evt.type === 'leave') {
+          currentRoom = null;
+          roomSyncPending = false;
         }
       }
     });
@@ -114,19 +128,27 @@ onUnmounted(() => {
 function handleNetworkEvent(msg) {
   switch (msg.type) {
     case 'connected':
-      break;
-
-    case 'room_joined':
-      if (msg.payload?.players?.length) {
-        gameApp?.setRemotePlayers(msg.payload.players);
+      console.debug('[WS][client] connected', { flushedPendingMessages: msg.flushedPendingMessages });
+      if (msg.flushedPendingMessages) {
+        roomSyncPending = false;
+      } else if (roomSyncPending) {
+        syncCurrentRoom();
       }
       break;
 
+    case 'room_joined':
+      console.debug('[WS][client] room_joined', msg.payload);
+      roomSyncPending = false;
+      gameApp?.setRemotePlayers(msg.payload?.players || []);
+      break;
+
     case 'player_joined':
+      console.debug('[WS][client] player_joined', msg.payload);
       gameApp?.addRemotePlayer(msg.payload);
       break;
 
     case 'player_left':
+      console.debug('[WS][client] player_left', msg.payload);
       gameApp?.removeRemotePlayer(msg.payload?.playerId);
       break;
 
@@ -137,7 +159,14 @@ function handleNetworkEvent(msg) {
       break;
 
     case 'chat_broadcast':
+      console.debug('[WS][client] chat_broadcast', msg.payload);
       emit('chat', msg.payload);
+      break;
+
+    case 'disconnected':
+      console.debug('[WS][client] disconnected', { currentRoom });
+      roomSyncPending = !!currentRoom;
+      gameApp?.setRemotePlayers([]);
       break;
 
     case 'pong':
@@ -150,7 +179,10 @@ function handleNetworkEvent(msg) {
 }
 
 function sendChat(message) {
-  if (network) network.send('chat', { message });
+  if (network) {
+    console.debug('[WS][client] sendChat', { message, currentRoom });
+    network.send('chat', { message });
+  }
 }
 
 defineExpose({ sendChat });

@@ -146,7 +146,7 @@ export const useActionStore = defineStore('action', () => {
       } catch {
         stopPolling();
       }
-    }, 1000);
+    }, 5000);
   }
 
   /** 停止轮询 */

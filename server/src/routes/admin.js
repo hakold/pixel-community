@@ -7,8 +7,11 @@
 const express = require('express');
 const adminController = require('../controllers/adminController');
 const mapController = require('../controllers/mapController');
+const { localOnly } = require('../middleware/localOnly');
 
 const router = express.Router();
+
+router.use(localOnly);
 
 // 配置管理
 router.get('/config/status', adminController.getConfigStatus);

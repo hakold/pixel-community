@@ -21,6 +21,7 @@ function initWebSocket(httpServer) {
   const wss = new WebSocketServer({ server: httpServer });
 
   wss.on('connection', (ws, req) => {
+    console.log(`[WS] 收到连接: ip=${req.socket.remoteAddress || 'unknown'} url=${req.url || '/'}`);
     // ---- Step 1: JWT 认证 ----
     const token = extractToken(req);
     let player = null;
@@ -69,6 +70,7 @@ function initWebSocket(httpServer) {
     ws.on('message', (data) => {
       try {
         const message = JSON.parse(data.toString());
+        console.log(`[WS] 收到消息: player=${ws.characterName} type=${message.type}`);
         routeMessage(ws, wss, message);
       } catch (_err) {
         sendTo(ws, 'error', { message: '消息格式错误，需要 JSON' });
@@ -156,10 +158,12 @@ function handleJoinRoom(ws, wss, payload) {
   }
 
   const { roomId } = payload;
+  console.log(`[WS] join_room: player=${ws.characterName} room=${roomId} pos=(${payload.x ?? 0},${payload.y ?? 0})`);
 
   // 离开旧房间（如有），广播离开消息
   const prevInfo = roomManager.leaveRoom(ws.playerId);
   if (prevInfo) {
+    console.log(`[WS] 切换房间: player=${ws.characterName} from=${prevInfo.roomId} to=${roomId}`);
     broadcastToRoom(wss, prevInfo.roomId, 'player_left', {
       playerId: ws.playerId,
     });
@@ -213,6 +217,7 @@ function handleMove(ws, wss, payload) {
 
   // 广播给同房间其他玩家
   const roomId = roomManager.getPlayerRoom(ws.playerId);
+  console.log(`[WS] move: player=${ws.characterName} room=${roomId} -> (${updated.x},${updated.y}) state=${updated.state}`);
   broadcastToRoom(wss, roomId, 'player_moved', {
     playerId: ws.playerId,
     x: updated.x,
@@ -232,8 +237,11 @@ function handleChat(ws, wss, payload) {
 
   const roomId = roomManager.getPlayerRoom(ws.playerId);
   if (!roomId) {
+    console.warn(`[WS] chat dropped: player=${ws.characterName} reason=no_room`);
     return sendTo(ws, 'error', { message: '你不在任何房间中，无法发送消息' });
   }
+
+  console.log(`[WS] chat: player=${ws.characterName} room=${roomId} message=${JSON.stringify(payload.message.trim())}`);
 
   broadcastToRoom(wss, roomId, 'chat_broadcast', {
     playerId: ws.playerId,
@@ -259,12 +267,18 @@ function broadcastToRoom(wss, roomId, type, payload, excludePlayerId) {
   if (excludePlayerId) playerIds.delete(excludePlayerId);
 
   const data = JSON.stringify({ type, payload });
+  const recipients = [];
 
   wss.clients.forEach((client) => {
     if (client.playerId && playerIds.has(client.playerId) && client.readyState === 1) {
+      recipients.push(client.characterName || client.playerId);
       client.send(data);
     }
   });
+
+  console.log(
+    `[WS] broadcast: type=${type} room=${roomId} recipients=${recipients.length ? recipients.join(',') : '(none)'} exclude=${excludePlayerId || '(none)'}`
+  );
 }
 
 /**
