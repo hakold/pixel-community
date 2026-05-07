@@ -4,14 +4,15 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { getMapsDir } = require('../config/configPaths');
 
-const MAPS_DIR = path.join(__dirname, '..', '..', 'config', 'maps');
 const MAP_ID_RE = /^[A-Za-z0-9_-]+$/;
 
 /** 确保存储目录存在 */
 function ensureDir() {
-  if (!fs.existsSync(MAPS_DIR)) {
-    fs.mkdirSync(MAPS_DIR, { recursive: true });
+  const mapsDir = getMapsDir();
+  if (!fs.existsSync(mapsDir)) {
+    fs.mkdirSync(mapsDir, { recursive: true });
   }
 }
 
@@ -23,7 +24,7 @@ function validateMapId(mapId) {
 
 function getMapFilepath(mapId) {
   validateMapId(mapId);
-  return path.join(MAPS_DIR, `${mapId}.json`);
+  return path.join(getMapsDir(), `${mapId}.json`);
 }
 
 /**
@@ -32,9 +33,10 @@ function getMapFilepath(mapId) {
  */
 function listMaps() {
   ensureDir();
-  const files = fs.readdirSync(MAPS_DIR).filter((f) => f.endsWith('.json'));
+  const mapsDir = getMapsDir();
+  const files = fs.readdirSync(mapsDir).filter((f) => f.endsWith('.json'));
   return files.map((f) => {
-    const raw = fs.readFileSync(path.join(MAPS_DIR, f), 'utf-8');
+    const raw = fs.readFileSync(path.join(mapsDir, f), 'utf-8');
     const cfg = JSON.parse(raw);
     return {
       mapId: cfg.mapId || f.replace('.json', ''),

@@ -4,6 +4,7 @@
   "description": "《像素社区》游戏后端服务",
   "main": "src/server.js",
   "scripts": {
+    "config:build": "node scripts/buildGameConfig.js",
     "start": "node src/server.js",
     "dev": "node --watch src/server.js"
   },

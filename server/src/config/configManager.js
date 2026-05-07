@@ -26,6 +26,9 @@ const DEFAULT_MANIFEST = {
   woodcut: 'woodcut.json',
   fishing: 'fishing.json',
   skills: 'skills.json',
+  items: 'items.json',
+  shops: 'shops.json',
+  recoveryActions: 'recoveryActions.json',
   levelExp: 'levelExp.json',
 };
 

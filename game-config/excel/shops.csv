@@ -1,0 +1,7 @@
+shop_id,shop_name,currency,item_id,price,stock,unlock_level
+general_store,杂货店,gold,bread,20,,1
+general_store,杂货店,gold,boxed_meal,45,,5
+general_store,杂货店,gold,soap,18,,1
+general_store,杂货店,gold,coffee,30,,3
+clinic,社区诊所,gold,vitamin,40,,5
+arcade,游艺厅,gold,ticket_arcade,25,,3

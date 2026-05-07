@@ -2,11 +2,11 @@
  * 服务启动入口
  * 负责初始化数据库连接、启动 HTTP + WebSocket 服务
  */
-const path = require('path');
 const http = require('http');
 const app = require('./app');
 const config = require('./config');
 const configManager = require('./config/configManager');
+const { getConfigDir } = require('./config/configPaths');
 const { connectMongoDB, connectRedis, closeConnections } = require('./config/db');
 const { initWebSocket } = require('./ws');
 const regenService = require('./services/regenService');
@@ -19,9 +19,9 @@ let redis = null;
  */
 async function start() {
   // 0. 初始化配置管理器（加载全部 JSON 配置到内存）
-  const configDir = path.join(__dirname, '..', 'config');
+  const configDir = getConfigDir();
   configManager.init(configDir);
-  console.log('[Server] 配置管理器已初始化');
+  console.log(`[Server] 配置管理器已初始化: ${configDir}`);
 
   // 1. 连接 MongoDB
   await connectMongoDB();

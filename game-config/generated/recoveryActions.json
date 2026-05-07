@@ -1,0 +1,79 @@
+[
+  {
+    "id": "rest_bench",
+    "name": "长椅休息",
+    "recoveryType": "rest",
+    "description": "在公共长椅短暂休息",
+    "facility": "bench",
+    "zoneId": "plaza_rest",
+    "duration": 300,
+    "costGold": 0,
+    "effects": {
+      "energy": 20
+    }
+  },
+  {
+    "id": "bath_public",
+    "name": "公共浴室",
+    "recoveryType": "clean",
+    "description": "花费金币恢复清洁",
+    "facility": "bathhouse",
+    "zoneId": "bathhouse_zone",
+    "duration": 600,
+    "costGold": 25,
+    "effects": {
+      "clean": 55
+    },
+    "requirements": {
+      "level": 3
+    }
+  },
+  {
+    "id": "meal_canteen",
+    "name": "社区食堂",
+    "recoveryType": "food",
+    "description": "购买基础餐食恢复饱腹",
+    "facility": "canteen",
+    "zoneId": "canteen_zone",
+    "duration": 120,
+    "costGold": 18,
+    "effects": {
+      "hunger": 45
+    },
+    "requirements": {
+      "level": 1
+    }
+  },
+  {
+    "id": "clinic_check",
+    "name": "社区诊疗",
+    "recoveryType": "medical",
+    "description": "简单治疗恢复健康",
+    "facility": "clinic",
+    "zoneId": "clinic_zone",
+    "duration": 300,
+    "costGold": 30,
+    "effects": {
+      "health": 35
+    },
+    "requirements": {
+      "level": 5
+    }
+  },
+  {
+    "id": "arcade_play",
+    "name": "街机娱乐",
+    "recoveryType": "fun",
+    "description": "娱乐活动恢复心情",
+    "facility": "arcade",
+    "zoneId": "arcade_zone",
+    "duration": 300,
+    "costGold": 20,
+    "effects": {
+      "mood": 30
+    },
+    "requirements": {
+      "level": 3
+    }
+  }
+]

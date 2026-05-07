@@ -1,0 +1,111 @@
+[
+  {
+    "id": "mining_copper",
+    "name": "挖铜矿",
+    "description": "采集最基础的铜矿资源",
+    "requirements": {
+      "level": 1,
+      "strength": 3
+    },
+    "duration": 300,
+    "energyCost": 8,
+    "rewards": {
+      "exp": 15,
+      "items": [
+        {
+          "itemId": "copper_ore",
+          "count": 1,
+          "weight": 100
+        }
+      ]
+    }
+  },
+  {
+    "id": "mining_iron",
+    "name": "挖铁矿",
+    "description": "采集铁矿资源",
+    "requirements": {
+      "level": 5,
+      "strength": 10
+    },
+    "duration": 600,
+    "energyCost": 12,
+    "rewards": {
+      "exp": 40,
+      "items": [
+        {
+          "itemId": "iron_ore",
+          "count": 1,
+          "weight": 70
+        },
+        {
+          "itemId": "copper_ore",
+          "count": 1,
+          "weight": 30
+        }
+      ]
+    }
+  },
+  {
+    "id": "mining_gold",
+    "name": "挖金矿",
+    "description": "采集稀有的金矿",
+    "requirements": {
+      "level": 15,
+      "strength": 25
+    },
+    "duration": 1200,
+    "energyCost": 20,
+    "rewards": {
+      "exp": 100,
+      "items": [
+        {
+          "itemId": "gold_ore",
+          "count": 1,
+          "weight": 40
+        },
+        {
+          "itemId": "iron_ore",
+          "count": 2,
+          "weight": 40
+        },
+        {
+          "itemId": "diamond_raw",
+          "count": 1,
+          "weight": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "mining_diamond",
+    "name": "钻石矿脉",
+    "description": "深层钻石采集高风险",
+    "requirements": {
+      "level": 30,
+      "strength": 50
+    },
+    "duration": 3600,
+    "energyCost": 30,
+    "rewards": {
+      "exp": 500,
+      "items": [
+        {
+          "itemId": "diamond_raw",
+          "count": 2,
+          "weight": 40
+        },
+        {
+          "itemId": "gold_ore",
+          "count": 3,
+          "weight": 35
+        },
+        {
+          "itemId": "mythril_ore",
+          "count": 1,
+          "weight": 25
+        }
+      ]
+    }
+  }
+]

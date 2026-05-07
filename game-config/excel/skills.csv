@@ -1,0 +1,8 @@
+id,name,category,type,description,max_level,level_cost_type,level_costs,base_damage,damage_per_level,base_heal,heal_per_level,cooldown,aoe,stun_chance,stun_chance_per_level,effect_hunger,effect_charisma,effect_strength,effect_attack,effect_defense,effect_speed,effect_intelligence
+life_cooking,烹饪,life,,制作食物恢复饥饿值等级越高可制作的食物越好,10,exp,0|100|250|500|1000|2000|4000|7000|11000|16000,,,,,,,,,5,,,,,,
+life_fishing,钓鱼,life,,提升钓鱼效率与稀有鱼种捕获率,10,exp,0|100|250|500|1000|2000|4000|7000|11000|16000,,,,,,,,,,2,,,,,
+life_planting,种植,life,,种植作物等级越高解锁的作物种类越多,10,exp,0|100|250|500|1000|2000|4000|7000|11000|16000,,,,,,,,,,,2,,,,
+battle_slash,斩击,battle,damage,基础物理攻击对单体造成伤害,10,exp,0|200|500|1000|2000|4000|8000|14000|22000|32000,20,15,,,5,,,,,,,3,,,
+battle_fireball,火球术,battle,damage,释放火球造成范围伤害,10,exp,0|300|700|1400|2800|5600|11000|20000|32000|48000,35,20,,,8,true,,,,,,,,,4
+battle_heal,治愈术,battle,buff,恢复自身HP,10,exp,0|200|500|1000|2000|4000|8000|14000|22000|32000,,,25,18,6,,,,,,,,,,3
+battle_stun,眩晕打击,battle,control,有概率使敌人眩晕一回合,10,exp,0|300|700|1400|2800|5600|11000|20000|32000|48000,10,8,,,7,,20,5,,,,,,2,

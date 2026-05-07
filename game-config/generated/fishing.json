@@ -1,0 +1,93 @@
+[
+  {
+    "id": "fishing_river",
+    "name": "河钓",
+    "description": "在河边悠然垂钓",
+    "requirements": {
+      "level": 1
+    },
+    "duration": 300,
+    "energyCost": 5,
+    "rewards": {
+      "exp": 10,
+      "items": [
+        {
+          "itemId": "carp",
+          "count": 1,
+          "weight": 60
+        },
+        {
+          "itemId": "crucian",
+          "count": 1,
+          "weight": 40
+        }
+      ]
+    }
+  },
+  {
+    "id": "fishing_lake",
+    "name": "湖钓",
+    "description": "在大湖中捕捉",
+    "requirements": {
+      "level": 10
+    },
+    "duration": 600,
+    "energyCost": 8,
+    "rewards": {
+      "exp": 30,
+      "items": [
+        {
+          "itemId": "bass",
+          "count": 1,
+          "weight": 50
+        },
+        {
+          "itemId": "catfish",
+          "count": 1,
+          "weight": 30
+        },
+        {
+          "itemId": "salmon",
+          "count": 1,
+          "weight": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "fishing_ocean",
+    "name": "海钓",
+    "description": "海洋深水捕捞",
+    "requirements": {
+      "level": 25,
+      "strength": 30
+    },
+    "duration": 1800,
+    "energyCost": 18,
+    "rewards": {
+      "exp": 120,
+      "items": [
+        {
+          "itemId": "tuna",
+          "count": 1,
+          "weight": 40
+        },
+        {
+          "itemId": "shark_fin",
+          "count": 1,
+          "weight": 30
+        },
+        {
+          "itemId": "pearl",
+          "count": 1,
+          "weight": 15
+        },
+        {
+          "itemId": "ancient_coin",
+          "count": 1,
+          "weight": 15
+        }
+      ]
+    }
+  }
+]

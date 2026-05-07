@@ -1,0 +1,6 @@
+id,name,recovery_type,facility,zone_id,duration_sec,cost_gold,recover_energy,recover_hunger,recover_clean,recover_mood,recover_health,req_level,description
+rest_bench,长椅休息,rest,bench,plaza_rest,300,0,20,,,,,,在公共长椅短暂休息
+bath_public,公共浴室,clean,bathhouse,bathhouse_zone,600,25,,,55,,,3,花费金币恢复清洁
+meal_canteen,社区食堂,food,canteen,canteen_zone,120,18,,45,,,,1,购买基础餐食恢复饱腹
+clinic_check,社区诊疗,medical,clinic,clinic_zone,300,30,,,,,35,5,简单治疗恢复健康
+arcade_play,街机娱乐,fun,arcade,arcade_zone,300,20,,,,30,,3,娱乐活动恢复心情

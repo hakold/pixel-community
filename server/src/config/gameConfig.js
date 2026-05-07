@@ -49,6 +49,58 @@ function getFishingConfig() {
 }
 
 /**
+ * 获取技能配置 (skills.json)
+ */
+function getSkillsConfig() {
+  return configManager.get('skills');
+}
+
+/**
+ * 获取道具配置 (items.json)
+ */
+function getItemsConfig() {
+  return configManager.get('items');
+}
+
+/**
+ * 获取商店配置 (shops.json)
+ */
+function getShopsConfig() {
+  return configManager.get('shops');
+}
+
+/**
+ * 获取恢复行为配置 (recoveryActions.json)
+ */
+function getRecoveryActionsConfig() {
+  return configManager.get('recoveryActions');
+}
+
+/**
+ * 根据 itemId 获取道具配置
+ */
+function getItemConfig(itemId) {
+  const list = getItemsConfig() || [];
+  return list.find((item) => item.itemId === itemId) || null;
+}
+
+/**
+ * 根据 shopId 获取商店配置
+ */
+function getShopConfig(shopId) {
+  const list = getShopsConfig() || [];
+  return list.find((shop) => shop.id === shopId) || null;
+}
+
+/**
+ * 根据恢复行为 ID 获取配置
+ */
+function getRecoveryActionConfig(recoveryActionId) {
+  const list = getRecoveryActionsConfig() || [];
+  return list.find((item) => item.id === recoveryActionId) || null;
+}
+
+/**
  * 根据行为类型获取对应配置列表
  * @param {string} actionType - 'study' | 'work' | 'mining' | 'woodcut' | 'fishing'
  * @returns {Array|null}
@@ -92,6 +144,20 @@ function getAllActionConfigs() {
 }
 
 /**
+ * 获取 M1 需要的静态配置集合
+ */
+function getStaticConfigs() {
+  return {
+    game: getGameConfig(),
+    actions: getAllActionConfigs(),
+    skills: getSkillsConfig(),
+    items: getItemsConfig(),
+    shops: getShopsConfig(),
+    recoveryActions: getRecoveryActionsConfig(),
+  };
+}
+
+/**
  * 热更新全部游戏配置
  */
 function reloadAllConfigs() {
@@ -105,8 +171,16 @@ module.exports = {
   getMiningConfig,
   getWoodcutConfig,
   getFishingConfig,
+  getSkillsConfig,
+  getItemsConfig,
+  getShopsConfig,
+  getRecoveryActionsConfig,
+  getItemConfig,
+  getShopConfig,
+  getRecoveryActionConfig,
   getConfigByType,
   getActionConfig,
   getAllActionConfigs,
+  getStaticConfigs,
   reloadAllConfigs,
 };

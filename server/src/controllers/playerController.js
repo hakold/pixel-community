@@ -5,6 +5,7 @@
 const Player = require('../models/Player');
 const actionService = require('../services/actionService');
 const attributeService = require('../services/attributeService');
+const economyService = require('../services/economyService');
 const { success } = require('../utils/response');
 const { AppError } = require('../middleware/errorHandler');
 
@@ -67,7 +68,7 @@ async function getInventory(req, res, next) {
       throw new AppError('玩家不存在', 404);
     }
 
-    return success(res, { inventory: player.inventory }, '获取成功');
+    return success(res, { inventory: economyService.formatInventory(player.inventory) }, '获取成功');
   } catch (err) {
     next(err);
   }

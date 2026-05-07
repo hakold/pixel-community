@@ -1,0 +1,212 @@
+{
+  "skills": [
+    {
+      "id": "life_cooking",
+      "name": "烹饪",
+      "category": "life",
+      "description": "制作食物恢复饥饿值等级越高可制作的食物越好",
+      "maxLevel": 10,
+      "levelUpCost": {
+        "type": "exp",
+        "values": [
+          0,
+          100,
+          250,
+          500,
+          1000,
+          2000,
+          4000,
+          7000,
+          11000,
+          16000
+        ]
+      },
+      "effects": {
+        "perLevel": {
+          "hunger": 5
+        }
+      }
+    },
+    {
+      "id": "life_fishing",
+      "name": "钓鱼",
+      "category": "life",
+      "description": "提升钓鱼效率与稀有鱼种捕获率",
+      "maxLevel": 10,
+      "levelUpCost": {
+        "type": "exp",
+        "values": [
+          0,
+          100,
+          250,
+          500,
+          1000,
+          2000,
+          4000,
+          7000,
+          11000,
+          16000
+        ]
+      },
+      "effects": {
+        "perLevel": {
+          "charisma": 2
+        }
+      }
+    },
+    {
+      "id": "life_planting",
+      "name": "种植",
+      "category": "life",
+      "description": "种植作物等级越高解锁的作物种类越多",
+      "maxLevel": 10,
+      "levelUpCost": {
+        "type": "exp",
+        "values": [
+          0,
+          100,
+          250,
+          500,
+          1000,
+          2000,
+          4000,
+          7000,
+          11000,
+          16000
+        ]
+      },
+      "effects": {
+        "perLevel": {
+          "strength": 2
+        }
+      }
+    },
+    {
+      "id": "battle_slash",
+      "name": "斩击",
+      "category": "battle",
+      "description": "基础物理攻击对单体造成伤害",
+      "maxLevel": 10,
+      "levelUpCost": {
+        "type": "exp",
+        "values": [
+          0,
+          200,
+          500,
+          1000,
+          2000,
+          4000,
+          8000,
+          14000,
+          22000,
+          32000
+        ]
+      },
+      "type": "damage",
+      "baseDamage": 20,
+      "damagePerLevel": 15,
+      "cooldown": 5,
+      "effects": {
+        "perLevel": {
+          "attack": 3
+        }
+      }
+    },
+    {
+      "id": "battle_fireball",
+      "name": "火球术",
+      "category": "battle",
+      "description": "释放火球造成范围伤害",
+      "maxLevel": 10,
+      "levelUpCost": {
+        "type": "exp",
+        "values": [
+          0,
+          300,
+          700,
+          1400,
+          2800,
+          5600,
+          11000,
+          20000,
+          32000,
+          48000
+        ]
+      },
+      "type": "damage",
+      "baseDamage": 35,
+      "damagePerLevel": 20,
+      "cooldown": 8,
+      "aoe": true,
+      "effects": {
+        "perLevel": {
+          "intelligence": 4
+        }
+      }
+    },
+    {
+      "id": "battle_heal",
+      "name": "治愈术",
+      "category": "battle",
+      "description": "恢复自身HP",
+      "maxLevel": 10,
+      "levelUpCost": {
+        "type": "exp",
+        "values": [
+          0,
+          200,
+          500,
+          1000,
+          2000,
+          4000,
+          8000,
+          14000,
+          22000,
+          32000
+        ]
+      },
+      "type": "buff",
+      "baseHeal": 25,
+      "healPerLevel": 18,
+      "cooldown": 6,
+      "effects": {
+        "perLevel": {
+          "intelligence": 3
+        }
+      }
+    },
+    {
+      "id": "battle_stun",
+      "name": "眩晕打击",
+      "category": "battle",
+      "description": "有概率使敌人眩晕一回合",
+      "maxLevel": 10,
+      "levelUpCost": {
+        "type": "exp",
+        "values": [
+          0,
+          300,
+          700,
+          1400,
+          2800,
+          5600,
+          11000,
+          20000,
+          32000,
+          48000
+        ]
+      },
+      "type": "control",
+      "baseDamage": 10,
+      "damagePerLevel": 8,
+      "cooldown": 7,
+      "stunChance": 20,
+      "stunChancePerLevel": 5,
+      "effects": {
+        "perLevel": {
+          "speed": 2
+        }
+      }
+    }
+  ]
+}

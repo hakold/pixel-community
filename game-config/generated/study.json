@@ -1,0 +1,170 @@
+[
+  {
+    "id": "preschool",
+    "name": "学前班",
+    "description": "基础启蒙教育",
+    "requirements": {
+      "level": 1,
+      "gold": 100,
+      "intelligence": 1
+    },
+    "duration": 600,
+    "energyCost": 15,
+    "stage": 1,
+    "rewards": {
+      "exp": 50,
+      "attributes": {
+        "intelligence": 2,
+        "charm": 1
+      }
+    },
+    "unlocks": []
+  },
+  {
+    "id": "elementary",
+    "name": "小学",
+    "description": "文化基础学习",
+    "requirements": {
+      "level": 3,
+      "gold": 500,
+      "intelligence": 10,
+      "education": "preschool"
+    },
+    "duration": 1800,
+    "energyCost": 20,
+    "stage": 2,
+    "rewards": {
+      "exp": 200,
+      "attributes": {
+        "intelligence": 5,
+        "charm": 2
+      }
+    },
+    "unlocks": [
+      "student_job"
+    ]
+  },
+  {
+    "id": "middle_school",
+    "name": "中学",
+    "description": "进阶文化学习",
+    "requirements": {
+      "level": 8,
+      "gold": 2000,
+      "intelligence": 20,
+      "education": "elementary"
+    },
+    "duration": 3600,
+    "energyCost": 25,
+    "stage": 3,
+    "rewards": {
+      "exp": 500,
+      "attributes": {
+        "strength": 2,
+        "intelligence": 10,
+        "charm": 3
+      }
+    },
+    "unlocks": [
+      "tutor_job"
+    ]
+  },
+  {
+    "id": "high_school",
+    "name": "高中",
+    "description": "高等教育预备",
+    "requirements": {
+      "level": 15,
+      "gold": 5000,
+      "intelligence": 35,
+      "education": "middle_school"
+    },
+    "duration": 7200,
+    "energyCost": 30,
+    "stage": 4,
+    "rewards": {
+      "exp": 1000,
+      "attributes": {
+        "intelligence": 15,
+        "charm": 5
+      }
+    },
+    "unlocks": [
+      "intern_job"
+    ]
+  },
+  {
+    "id": "college",
+    "name": "大学",
+    "description": "专业学习深造",
+    "requirements": {
+      "level": 25,
+      "gold": 15000,
+      "intelligence": 50,
+      "education": "high_school"
+    },
+    "duration": 14400,
+    "energyCost": 35,
+    "stage": 5,
+    "rewards": {
+      "exp": 3000,
+      "attributes": {
+        "intelligence": 25,
+        "charm": 10
+      }
+    },
+    "unlocks": [
+      "office_job",
+      "researcher_job"
+    ]
+  },
+  {
+    "id": "graduate",
+    "name": "研究生",
+    "description": "学术研究",
+    "requirements": {
+      "level": 40,
+      "gold": 50000,
+      "intelligence": 70,
+      "education": "college"
+    },
+    "duration": 28800,
+    "energyCost": 40,
+    "stage": 6,
+    "rewards": {
+      "exp": 8000,
+      "attributes": {
+        "intelligence": 40,
+        "charm": 15
+      }
+    },
+    "unlocks": [
+      "scientist_job"
+    ]
+  },
+  {
+    "id": "phd",
+    "name": "博士",
+    "description": "最高学术成就",
+    "requirements": {
+      "level": 60,
+      "gold": 150000,
+      "intelligence": 90,
+      "education": "graduate"
+    },
+    "duration": 57600,
+    "energyCost": 50,
+    "stage": 7,
+    "rewards": {
+      "exp": 20000,
+      "attributes": {
+        "intelligence": 60,
+        "charm": 25
+      }
+    },
+    "unlocks": [
+      "professor_job",
+      "chief_scientist_job"
+    ]
+  }
+]

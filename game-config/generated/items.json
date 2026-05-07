@@ -1,0 +1,344 @@
+[
+  {
+    "itemId": "bread",
+    "name": "面包",
+    "type": "consumable",
+    "description": "基础食物恢复饱腹",
+    "quality": "common",
+    "maxStack": 99,
+    "sellPrice": 12,
+    "buyPrice": 20,
+    "useEffect": {
+      "type": "hunger",
+      "value": 35
+    },
+    "tags": [
+      "food",
+      "starter"
+    ]
+  },
+  {
+    "itemId": "boxed_meal",
+    "name": "便当",
+    "type": "consumable",
+    "description": "中级食物适合日常恢复",
+    "quality": "common",
+    "maxStack": 99,
+    "sellPrice": 28,
+    "buyPrice": 45,
+    "useEffect": {
+      "type": "hunger",
+      "value": 60
+    },
+    "tags": [
+      "food",
+      "shop"
+    ]
+  },
+  {
+    "itemId": "soap",
+    "name": "肥皂",
+    "type": "consumable",
+    "description": "基础清洁用品",
+    "quality": "common",
+    "maxStack": 99,
+    "sellPrice": 10,
+    "buyPrice": 18,
+    "useEffect": {
+      "type": "clean",
+      "value": 30
+    },
+    "tags": [
+      "cleaning",
+      "shop"
+    ]
+  },
+  {
+    "itemId": "coffee",
+    "name": "咖啡",
+    "type": "consumable",
+    "description": "快速恢复少量精力",
+    "quality": "common",
+    "maxStack": 99,
+    "sellPrice": 18,
+    "buyPrice": 30,
+    "useEffect": {
+      "type": "energy",
+      "value": 20
+    },
+    "tags": [
+      "drink",
+      "shop"
+    ]
+  },
+  {
+    "itemId": "vitamin",
+    "name": "维生素",
+    "type": "consumable",
+    "description": "恢复少量健康",
+    "quality": "uncommon",
+    "maxStack": 99,
+    "sellPrice": 25,
+    "buyPrice": 40,
+    "useEffect": {
+      "type": "health",
+      "value": 25
+    },
+    "tags": [
+      "medical",
+      "shop"
+    ]
+  },
+  {
+    "itemId": "ticket_arcade",
+    "name": "游乐券",
+    "type": "consumable",
+    "description": "恢复心情",
+    "quality": "common",
+    "maxStack": 99,
+    "sellPrice": 15,
+    "buyPrice": 25,
+    "useEffect": {
+      "type": "mood",
+      "value": 25
+    },
+    "tags": [
+      "entertainment",
+      "shop"
+    ]
+  },
+  {
+    "itemId": "copper_ore",
+    "name": "铜矿石",
+    "type": "material",
+    "description": "基础矿石材料",
+    "quality": "common",
+    "maxStack": 999,
+    "sellPrice": 6,
+    "tags": [
+      "ore",
+      "mining"
+    ]
+  },
+  {
+    "itemId": "iron_ore",
+    "name": "铁矿石",
+    "type": "material",
+    "description": "常见进阶矿石",
+    "quality": "common",
+    "maxStack": 999,
+    "sellPrice": 16,
+    "tags": [
+      "ore",
+      "mining"
+    ]
+  },
+  {
+    "itemId": "gold_ore",
+    "name": "金矿石",
+    "type": "material",
+    "description": "稀有矿石",
+    "quality": "rare",
+    "maxStack": 999,
+    "sellPrice": 60,
+    "tags": [
+      "ore",
+      "mining"
+    ]
+  },
+  {
+    "itemId": "diamond_raw",
+    "name": "钻石原石",
+    "type": "material",
+    "description": "高价值原石",
+    "quality": "rare",
+    "maxStack": 999,
+    "sellPrice": 220,
+    "tags": [
+      "ore",
+      "mining"
+    ]
+  },
+  {
+    "itemId": "mythril_ore",
+    "name": "秘银矿",
+    "type": "material",
+    "description": "高阶稀有矿",
+    "quality": "epic",
+    "maxStack": 999,
+    "sellPrice": 600,
+    "tags": [
+      "ore",
+      "mining"
+    ]
+  },
+  {
+    "itemId": "pine_log",
+    "name": "松木",
+    "type": "material",
+    "description": "基础木材",
+    "quality": "common",
+    "maxStack": 999,
+    "sellPrice": 8,
+    "tags": [
+      "wood",
+      "woodcut"
+    ]
+  },
+  {
+    "itemId": "oak_log",
+    "name": "橡木",
+    "type": "material",
+    "description": "结实木材",
+    "quality": "common",
+    "maxStack": 999,
+    "sellPrice": 20,
+    "tags": [
+      "wood",
+      "woodcut"
+    ]
+  },
+  {
+    "itemId": "ebony_log",
+    "name": "黑檀木",
+    "type": "material",
+    "description": "高价值木材",
+    "quality": "rare",
+    "maxStack": 999,
+    "sellPrice": 80,
+    "tags": [
+      "wood",
+      "woodcut"
+    ]
+  },
+  {
+    "itemId": "ancient_log",
+    "name": "远古木",
+    "type": "material",
+    "description": "稀有古木",
+    "quality": "epic",
+    "maxStack": 999,
+    "sellPrice": 260,
+    "tags": [
+      "wood",
+      "woodcut"
+    ]
+  },
+  {
+    "itemId": "carp",
+    "name": "鲤鱼",
+    "type": "material",
+    "description": "常见淡水鱼",
+    "quality": "common",
+    "maxStack": 999,
+    "sellPrice": 8,
+    "tags": [
+      "fish",
+      "fishing"
+    ]
+  },
+  {
+    "itemId": "crucian",
+    "name": "鲫鱼",
+    "type": "material",
+    "description": "常见淡水鱼",
+    "quality": "common",
+    "maxStack": 999,
+    "sellPrice": 8,
+    "tags": [
+      "fish",
+      "fishing"
+    ]
+  },
+  {
+    "itemId": "bass",
+    "name": "鲈鱼",
+    "type": "material",
+    "description": "常见湖鱼",
+    "quality": "common",
+    "maxStack": 999,
+    "sellPrice": 18,
+    "tags": [
+      "fish",
+      "fishing"
+    ]
+  },
+  {
+    "itemId": "catfish",
+    "name": "鲶鱼",
+    "type": "material",
+    "description": "常见湖鱼",
+    "quality": "common",
+    "maxStack": 999,
+    "sellPrice": 16,
+    "tags": [
+      "fish",
+      "fishing"
+    ]
+  },
+  {
+    "itemId": "salmon",
+    "name": "鲑鱼",
+    "type": "material",
+    "description": "较稀有鱼类",
+    "quality": "uncommon",
+    "maxStack": 999,
+    "sellPrice": 26,
+    "tags": [
+      "fish",
+      "fishing"
+    ]
+  },
+  {
+    "itemId": "tuna",
+    "name": "金枪鱼",
+    "type": "material",
+    "description": "高价值海鱼",
+    "quality": "rare",
+    "maxStack": 999,
+    "sellPrice": 88,
+    "tags": [
+      "fish",
+      "fishing"
+    ]
+  },
+  {
+    "itemId": "shark_fin",
+    "name": "鱼翅",
+    "type": "material",
+    "description": "稀有海洋材料",
+    "quality": "epic",
+    "maxStack": 999,
+    "sellPrice": 260,
+    "tags": [
+      "fish",
+      "fishing"
+    ]
+  },
+  {
+    "itemId": "pearl",
+    "name": "珍珠",
+    "type": "material",
+    "description": "稀有收藏物",
+    "quality": "epic",
+    "maxStack": 999,
+    "sellPrice": 420,
+    "tags": [
+      "collectible",
+      "fishing"
+    ]
+  },
+  {
+    "itemId": "ancient_coin",
+    "name": "古钱币",
+    "type": "collectible",
+    "description": "历史收藏品",
+    "quality": "epic",
+    "maxStack": 999,
+    "sellPrice": 380,
+    "tags": [
+      "collectible",
+      "fishing"
+    ]
+  }
+]

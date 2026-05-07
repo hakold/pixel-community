@@ -1,0 +1,59 @@
+[
+  {
+    "id": "general_store",
+    "name": "杂货店",
+    "currency": "gold",
+    "entries": [
+      {
+        "itemId": "bread",
+        "price": 20,
+        "stock": null,
+        "unlockLevel": 1
+      },
+      {
+        "itemId": "boxed_meal",
+        "price": 45,
+        "stock": null,
+        "unlockLevel": 5
+      },
+      {
+        "itemId": "soap",
+        "price": 18,
+        "stock": null,
+        "unlockLevel": 1
+      },
+      {
+        "itemId": "coffee",
+        "price": 30,
+        "stock": null,
+        "unlockLevel": 3
+      }
+    ]
+  },
+  {
+    "id": "clinic",
+    "name": "社区诊所",
+    "currency": "gold",
+    "entries": [
+      {
+        "itemId": "vitamin",
+        "price": 40,
+        "stock": null,
+        "unlockLevel": 5
+      }
+    ]
+  },
+  {
+    "id": "arcade",
+    "name": "游艺厅",
+    "currency": "gold",
+    "entries": [
+      {
+        "itemId": "ticket_arcade",
+        "price": 25,
+        "stock": null,
+        "unlockLevel": 3
+      }
+    ]
+  }
+]
