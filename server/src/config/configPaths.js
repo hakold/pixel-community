@@ -67,6 +67,7 @@ function getMapsDir() {
 }
 
 module.exports = {
+  REPO_ROOT,
   GENERATED_CONFIG_DIR,
   LEGACY_CONFIG_DIR,
   REQUIRED_GENERATED_FILES,

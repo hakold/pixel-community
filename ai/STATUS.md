@@ -19,7 +19,7 @@
 - 已识别当前关键缺口：
   - 配置结构存在，但没有 Excel 导表链路
   - 美术资源还没有 manifest 层，很多展示规则写死在代码里
-  - 核心玩法缺少“恢复手段/商店/出售/使用”的闭环
+  - 核心玩法缺少"恢复手段/商店/出售/使用"的闭环
 - M1 当前已完成：
   - 已新增 `game-config/excel/` 下的 CSV 导表源案例
   - 已新增 `server/scripts/buildGameConfig.js`
@@ -41,42 +41,31 @@
 
 ## 当前内容
 
-当前阶段：`M1 配置基线（已完成）`
+当前阶段：`M2 美术资源基线（已完成）` → `M3 核心玩法闭环（下一步）`
 
-当前目标：
+M2 已完成全部交付物：
 
-- 建立 Excel 导表的最小可用链路
-- 让服务端支持从独立配置目录读取
-- 准备首批可直接参考填写的配置案例
-- 保持现有玩法运行逻辑不被破坏
+- tile 渲染配置化 ✅ — `drawTile()` manifest 驱动，sprite 优先 + HARD_FALLBACK 保底
+- 角色渲染配置化 ✅ — `drawActor()` manifest 驱动，sprite 优先 + procedural 保底
+- 34 个 AI 生成 sprite 全部放入并关联 manifest
+- `tile-manifest.json` 5 种 tile 全部配了 sprite
+- `character-manifest.json` player_self + 3 个 NPC 配了 sprite
+- `GET /api/meta/tile-manifest` + `GET /api/meta/character-manifest` 接口
+- 完整美术规范 + 策划/美术配置操作指南（`CONFIG_GUIDE.md`）
+- AI 素材生成清单（`asset_list.csv`）+ 协作指南（`ART_ASSETS.md`）
+- 批量裁切脚本（`slice-sprites.ps1`）
+- 名字标签 UI 调整（加大/加粗/上移/透明化）
 
-当前进行中的重点：
+已知限制：
 
-- Excel 采用“Excel 编辑后导出 UTF-8 CSV”作为 M1 输入格式
-- 运行时目标目录为 `game-config/generated/`
-- 地图配置暂时仍以 JSON 为主，不纳入第一批导表
-- 当前已纳入导表：
-  - `game_global.csv`
-  - `actions.csv`
-  - `action_drop_items.csv`
-  - `skills.csv`
-  - `items.csv`
-  - `shops.csv`
-  - `recovery_actions.csv`
-- 已完成一轮真实联调：
-  - 注册/登录
-  - 商店列表
-  - 购买
-  - 出售
-  - 恢复行为
-  - 背包详情返回
+- 所有 `building` tile 共用同一 sprite（无法按建筑子类型区分），需地图数据增加 buildingVariant 字段
 
 ## 未来规划
 
 优先级从高到低：
 
-1. `M1` 建立独立配置目录、Excel 模板、CSV 导表脚本、JSON 校验
-2. `M2` 建立美术资源规范、资源清单、资源引用规则
+1. `M1` 建立独立配置目录、Excel 模板、CSV 导表脚本、JSON 校验 ✅
+2. `M2` 建立美术资源规范、资源清单、资源引用规则 🔄
 3. `M3` 完成恢复闭环、商店、材料出售、道具使用
 4. `M4` 批量扩展内容生产能力
 5. `M5` 合成、任务、技能熟练度、更多地图
@@ -84,8 +73,6 @@
 
 ## 下一步建议
 
-下一执行批次建议直接做：
-
-1. 进入 M2 美术资源基线
-2. 定义资源 manifest 与命名规范
-3. 选择一块最小前端区域做资源配置化试点
+1. 继续 M2 剩余子任务（角色/NPC/建筑渲染配置化）
+2. 或获取 sprite 资源后直接验证 sprite 渲染链路
+3. 或推进 M3 核心玩法闭环

@@ -3,8 +3,12 @@ import { TILE } from "./tile-types.js";
 /**
  * 无状态渲染器 — 按场景快照绘制 Canvas
  * 角色按 Y 坐标深度排序保证遮挡正确
+ *
+ * 地块渲染由 tileManifest 驱动：
+ *   - sprite 存在且加载成功 → ctx.drawImage()
+ *   - 否则 → procedural fallback（diamond / block）
  */
-export function createRenderer({ canvas, mapModel, projection, visualConfig }) {
+export function createRenderer({ canvas, mapModel, projection, visualConfig, tileManifest, characterManifest }) {
   const ctx = canvas.getContext("2d");
   const { grid } = mapModel;
   const halfTileWidth = projection.halfTileWidth;
@@ -12,6 +16,25 @@ export function createRenderer({ canvas, mapModel, projection, visualConfig }) {
 
   canvas.width = grid.width * grid.tileWidth + grid.originOffsetX * 2;
   canvas.height = grid.height * grid.tileHeight + 520;
+
+  // ---- sprite 预加载 ----
+  const imageCache = {};
+
+  function preloadSprites(manifest, entriesKey) {
+    if (manifest && manifest[entriesKey]) {
+      for (const [, cfg] of Object.entries(manifest[entriesKey])) {
+        if (cfg.sprite && !imageCache[cfg.sprite]) {
+          const img = new Image();
+          img.src = cfg.sprite;
+          imageCache[cfg.sprite] = img;
+        }
+      }
+    }
+  }
+  preloadSprites(tileManifest, 'tiles');
+  preloadSprites(characterManifest, 'characters');
+
+  // ---- procedural 绘制工具 ----
 
   function drawDiamond(centerX, centerY, fillStyle, strokeStyle) {
     ctx.beginPath();
@@ -71,23 +94,58 @@ export function createRenderer({ canvas, mapModel, projection, visualConfig }) {
     }
   }
 
+  // ---- manifest 驱动的 tile 渲染 ----
+
+  function drawTileConfig(centerX, centerY, config) {
+    // 优先 sprite
+    if (config.sprite) {
+      const img = imageCache[config.sprite];
+      if (img && img.complete && img.naturalWidth > 0) {
+        const anchorX = centerX - img.naturalWidth * (config.anchor?.x ?? 0.5);
+        const anchorY = centerY - img.naturalHeight * (config.anchor?.y ?? 0.5);
+        ctx.drawImage(img, anchorX, anchorY);
+        return;
+      }
+    }
+
+    // procedural fallback
+    if (!config.render) return;
+    const { mode, colors } = config.render;
+
+    if (mode === "diamond") {
+      drawDiamond(centerX, centerY, colors.fill, colors.stroke);
+      if (colors.highlight) {
+        drawDiamond(centerX, centerY + 2, colors.highlight, "transparent");
+      }
+    } else if (mode === "block") {
+      const isDoor = colors.top === "#d8c4a0";
+      drawBlock(centerX, centerY, colors, isDoor);
+    }
+  }
+
+  // 硬编码 procedural 保底 —— manifest 加载失败时也能正常渲染
+  const HARD_FALLBACK = {
+    grass:   { render: { mode: "diamond", colors: { fill: "#97c977", stroke: "rgba(53, 85, 33, 0.2)", highlight: "rgba(255,255,255,0.03)" } } },
+    road:    { render: { mode: "diamond", colors: { fill: "#e6d8bc", stroke: "rgba(102, 84, 61, 0.18)" } } },
+    interior:{ render: { mode: "diamond", colors: { fill: "#f2e5cc", stroke: "rgba(124, 96, 69, 0.18)" } } },
+    building:{ render: { mode: "block",   colors: { top: "#b8795a", left: "#8f563f", right: "#744130" } } },
+    door:    { render: { mode: "block",   colors: { top: "#d8c4a0", left: "#9a7a5b", right: "#7d5f44" } } }
+  };
+
+  function getTileConfig(tileType) {
+    // manifest 优先
+    if (tileManifest && tileManifest.tiles && tileManifest.tiles[tileType]) {
+      return tileManifest.tiles[tileType];
+    }
+    // 硬兜底
+    return HARD_FALLBACK[tileType] ?? null;
+  }
+
   function drawTile(x, y, tile) {
     const screen = projection.gridToScreen(x, y);
-    if (tile === TILE.GRASS) {
-      drawDiamond(screen.x, screen.y, "#97c977", "rgba(53, 85, 33, 0.2)");
-      drawDiamond(screen.x, screen.y + 2, "rgba(255,255,255,0.03)", "transparent");
-    }
-    if (tile === TILE.ROAD) {
-      drawDiamond(screen.x, screen.y, "#e6d8bc", "rgba(102, 84, 61, 0.18)");
-    }
-    if (tile === TILE.INTERIOR) {
-      drawDiamond(screen.x, screen.y, "#f2e5cc", "rgba(124, 96, 69, 0.18)");
-    }
-    if (tile === TILE.BUILDING) {
-      drawBlock(screen.x, screen.y, { top: "#b8795a", left: "#8f563f", right: "#744130" });
-    }
-    if (tile === TILE.DOOR) {
-      drawBlock(screen.x, screen.y, { top: "#d8c4a0", left: "#9a7a5b", right: "#7d5f44" }, true);
+    const config = getTileConfig(tile);
+    if (config) {
+      drawTileConfig(screen.x, screen.y, config);
     }
   }
 
@@ -147,26 +205,64 @@ export function createRenderer({ canvas, mapModel, projection, visualConfig }) {
     }
   }
 
+  function getCharacterConfig(actorId, isPlayer) {
+    if (characterManifest && characterManifest.characters) {
+      // 精确 actorId 匹配
+      if (characterManifest.characters[actorId]) return characterManifest.characters[actorId];
+      // 玩家兜底
+      if (isPlayer && characterManifest.characters['player_self']) return characterManifest.characters['player_self'];
+      // NPC / remote 兜底
+      const fallbackKey = actorId.startsWith('dummy_') ? 'npc_default' : 'remote_player';
+      if (characterManifest.characters[fallbackKey]) return characterManifest.characters[fallbackKey];
+    }
+    return null;
+  }
+
+  function drawActorLabel(bodyX, bodyY, nickname, isPlayer) {
+    if (!visualConfig.showActorLabels) return;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.67)";
+    ctx.fillRect(bodyX - 45, bodyY - 78, 90, 26);
+    ctx.strokeStyle = "rgba(93, 74, 48, 0.16)";
+    ctx.strokeRect(bodyX - 45, bodyY - 78, 90, 26);
+    ctx.fillStyle = isPlayer ? "#d26d3d" : "#5a4e3f";
+    ctx.font = "bold 18px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(nickname, bodyX, bodyY - 65);
+  }
+
   function drawActor(actor, isPlayer = false) {
     const screen = projection.gridToScreen(actor.worldX, actor.worldY);
     const bodyX = screen.x;
     const bodyY = screen.y - 4;
+
+    // sprite 优先
+    const charConfig = getCharacterConfig(actor.actorId, isPlayer);
+    if (charConfig && charConfig.sprite) {
+      const img = imageCache[charConfig.sprite];
+      if (img && img.complete && img.naturalWidth > 0) {
+        const anchorX = bodyX - img.naturalWidth * (charConfig.anchor?.x ?? 0.5);
+        const anchorY = bodyY - img.naturalHeight * (charConfig.anchor?.y ?? 1.0);
+        ctx.drawImage(img, anchorX, anchorY);
+        drawActorLabel(bodyX, bodyY, actor.nickname, isPlayer);
+        return;
+      }
+    }
+
+    // procedural 保底
     const bodyColor = actor.bodyColor;
     const hairColor = actor.hairColor;
 
-    // 阴影
     ctx.fillStyle = "rgba(60, 44, 26, 0.18)";
     ctx.beginPath();
     ctx.ellipse(bodyX, bodyY + 34, 18, 10, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // 头
     ctx.fillStyle = "#f4d8b2";
     ctx.beginPath();
     ctx.arc(bodyX, bodyY - 18, 16, 0, Math.PI * 2);
     ctx.fill();
 
-    // 身体
     ctx.fillStyle = bodyColor;
     ctx.beginPath();
     ctx.moveTo(bodyX, bodyY - 2);
@@ -176,28 +272,16 @@ export function createRenderer({ canvas, mapModel, projection, visualConfig }) {
     ctx.closePath();
     ctx.fill();
 
-    // 腿
     ctx.fillStyle = "#3b2921";
     ctx.fillRect(bodyX - 9, bodyY + 26, 7, 18);
     ctx.fillRect(bodyX + 2, bodyY + 26, 7, 18);
 
-    // 头发
     ctx.fillStyle = hairColor;
     ctx.beginPath();
     ctx.arc(bodyX, bodyY - 22, 17, Math.PI, Math.PI * 2);
     ctx.fill();
 
-    // 名字标签
-    if (visualConfig.showActorLabels) {
-      ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
-      ctx.fillRect(bodyX - 24, bodyY - 54, 48, 18);
-      ctx.strokeStyle = "rgba(93, 74, 48, 0.16)";
-      ctx.strokeRect(bodyX - 24, bodyY - 54, 48, 18);
-      ctx.fillStyle = isPlayer ? "#d26d3d" : "#5a4e3f";
-      ctx.font = "12px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText(actor.nickname, bodyX, bodyY - 41);
-    }
+    drawActorLabel(bodyX, bodyY, actor.nickname, isPlayer);
   }
 
   function drawActors(scene) {

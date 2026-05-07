@@ -1,0 +1,69 @@
+{
+  "version": "1.0",
+  "description": "Tile type → visual config. Sprite takes priority; procedural is the fallback.",
+  "tiles": {
+    "grass": {
+      "layer": "ground",
+      "anchor": { "x": 0.5, "y": 0.5 },
+      "sprite": "/assets/sprites/tiles/grass_01.png",
+      "render": {
+        "mode": "diamond",
+        "colors": {
+          "fill": "#97c977",
+          "stroke": "rgba(53, 85, 33, 0.2)",
+          "highlight": "rgba(255,255,255,0.03)"
+        }
+      }
+    },
+    "road": {
+      "layer": "ground",
+      "anchor": { "x": 0.5, "y": 0.5 },
+      "sprite": "/assets/sprites/tiles/road_stone.png",
+      "render": {
+        "mode": "diamond",
+        "colors": {
+          "fill": "#e6d8bc",
+          "stroke": "rgba(102, 84, 61, 0.18)"
+        }
+      }
+    },
+    "interior": {
+      "layer": "ground",
+      "anchor": { "x": 0.5, "y": 0.5 },
+      "sprite": "/assets/sprites/tiles/interior_wood.png",
+      "render": {
+        "mode": "diamond",
+        "colors": {
+          "fill": "#f2e5cc",
+          "stroke": "rgba(124, 96, 69, 0.18)"
+        }
+      }
+    },
+    "building": {
+      "layer": "raised",
+      "anchor": { "x": 0.5, "y": 1.0 },
+      "sprite": "/assets/sprites/buildings/mine.png",
+      "render": {
+        "mode": "block",
+        "colors": {
+          "top": "#b8795a",
+          "left": "#8f563f",
+          "right": "#744130"
+        }
+      }
+    },
+    "door": {
+      "layer": "raised",
+      "anchor": { "x": 0.5, "y": 1.0 },
+      "sprite": "/assets/sprites/buildings/door_01.png",
+      "render": {
+        "mode": "block",
+        "colors": {
+          "top": "#d8c4a0",
+          "left": "#9a7a5b",
+          "right": "#7d5f44"
+        }
+      }
+    }
+  }
+}

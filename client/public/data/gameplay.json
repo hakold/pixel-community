@@ -27,5 +27,7 @@
   },
   "visuals": {
     "showActorLabels": true
-  }
+  },
+  "tileManifestPath": "/api/meta/tile-manifest",
+  "characterManifestPath": "/api/meta/character-manifest"
 }

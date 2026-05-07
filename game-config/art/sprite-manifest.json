@@ -1,0 +1,66 @@
+{
+  "version": "1.0",
+  "description": "Sprite asset registry. 每加入一个新 sprite 就在这里登记一条。",
+  "sprites": {
+    "tiles": {},
+    "buildings": {},
+    "characters": {},
+    "icons": {}
+  },
+
+  "_examples": {
+    "_comment": "以下是填写示例。实际使用时删除 _examples 整个段，把内容移到上面 sprites 对应分类中。",
+    "buildings": {
+      "mine": {
+        "path": "/assets/sprites/buildings/mine.png",
+        "width": 96,
+        "height": 110,
+        "anchor": { "x": 0.5, "y": 1.0 }
+      },
+      "hospital": {
+        "path": "/assets/sprites/buildings/hospital.png",
+        "width": 96,
+        "height": 110,
+        "anchor": { "x": 0.5, "y": 1.0 }
+      },
+      "restaurant": {
+        "path": "/assets/sprites/buildings/restaurant.png",
+        "width": 96,
+        "height": 110,
+        "anchor": { "x": 0.5, "y": 1.0 }
+      },
+      "school": {
+        "path": "/assets/sprites/buildings/school.png",
+        "width": 96,
+        "height": 110,
+        "anchor": { "x": 0.5, "y": 1.0 }
+      },
+      "shop_convenience": {
+        "path": "/assets/sprites/buildings/shop_convenience.png",
+        "width": 96,
+        "height": 110,
+        "anchor": { "x": 0.5, "y": 1.0 }
+      },
+      "fishing_hut": {
+        "path": "/assets/sprites/buildings/fishing_hut.png",
+        "width": 96,
+        "height": 110,
+        "anchor": { "x": 0.5, "y": 1.0 }
+      }
+    },
+    "tiles": {
+      "grass_01": {
+        "path": "/assets/sprites/tiles/grass_01.png",
+        "width": 96,
+        "height": 60,
+        "anchor": { "x": 0.5, "y": 0.5 }
+      },
+      "road_stone": {
+        "path": "/assets/sprites/tiles/road_stone.png",
+        "width": 96,
+        "height": 60,
+        "anchor": { "x": 0.5, "y": 0.5 }
+      }
+    }
+  }
+}

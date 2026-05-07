@@ -72,6 +72,30 @@
 - 用于存放开发常用的一键脚本
 - 破坏性脚本和启动脚本分开管理
 
+### 8. 美术 sprite 资源目录与配置目录分离
+
+- 二进制图片资源放在 `client/public/assets/sprites/`（Vite 静态服务）
+- 资源配置（manifest）放在 `game-config/art/`（独立配置目录）
+- 图片按类别分子目录：`tiles/`、`buildings/`、`characters/`、`icons/`
+
+原因：
+
+- Vite dev server 只服务 `client/public/` 下的静态文件
+- manifest 作为配置归属 `game-config/`，遵循配置独立原则
+- sprite 为二进制资源，不属于文本配置范畴
+
+### 9. 渲染采用 sprite 优先 + procedural 保底的双轨策略
+
+- tile-manifest 中每个 tile 可配置 `sprite` 和 `render` 两个字段
+- 渲染器优先尝试 `sprite`（drawImage），失败或不存在时走 `render`（程序化绘制）
+- procedural 支持 `diamond`（菱形地面）和 `block`（立方体建筑）两种模式
+
+原因：
+
+- 美术资源暂时不全，procedural 保底保证任何时候都能运行
+- 资源就位后只需改 manifest 配置，无需改渲染代码
+- 满足 M2 验收标准："前端至少能通过配置切换一套地块或建筑资源"
+
 ## 暂不执行事项
 
 - 暂不把战斗系统作为第一阶段目标
@@ -100,6 +124,9 @@ game-config/
     levelExp.json
     maps/
   art/
+    README.md
+    tile-manifest.json
+    sprite-manifest.json
   schemas/
 ```
 

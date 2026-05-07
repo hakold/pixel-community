@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "description": "角色→视觉配置映射。Sprite 优先；无 sprite 时走 procedural 保底（bodyColor + hairColor 程序化绘制）。",
+  "characters": {
+    "player_self": {
+      "sprite": "/assets/sprites/characters/player_base.png",
+      "anchor": { "x": 0.5, "y": 1.0 }
+    },
+    "npc_luna": {
+      "sprite": "/assets/sprites/characters/npc_luna.png",
+      "anchor": { "x": 0.5, "y": 1.0 }
+    },
+    "npc_momo": {
+      "sprite": "/assets/sprites/characters/npc_momo.png",
+      "anchor": { "x": 0.5, "y": 1.0 }
+    },
+    "npc_haru": {
+      "sprite": "/assets/sprites/characters/npc_haru.png",
+      "anchor": { "x": 0.5, "y": 1.0 }
+    },
+    "npc_default": {
+      "anchor": { "x": 0.5, "y": 1.0 }
+    },
+    "remote_player": {
+      "anchor": { "x": 0.5, "y": 1.0 }
+    }
+  }
+}

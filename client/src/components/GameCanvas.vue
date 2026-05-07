@@ -78,6 +78,29 @@ onMounted(async () => {
 
     // 2. 加载配置和地图
     const gameplayConfig = await loadGameplayConfig('/data/gameplay.json');
+
+    // 2b. 加载 tile manifest（失败时走 procedural 保底）
+    let tileManifest = null;
+    if (gameplayConfig.tileManifestPath) {
+      try {
+        const rawTile = await loadGameplayConfig(gameplayConfig.tileManifestPath);
+        tileManifest = (rawTile && rawTile.data && rawTile.data.tiles) ? rawTile.data : rawTile;
+      } catch (e) {
+        console.warn('[GameCanvas] 加载 tile-manifest 失败，使用 procedural 保底:', e.message);
+      }
+    }
+
+    // 2c. 加载 character manifest（失败时走 procedural 保底）
+    let characterManifest = null;
+    if (gameplayConfig.characterManifestPath) {
+      try {
+        const rawChar = await loadGameplayConfig(gameplayConfig.characterManifestPath);
+        characterManifest = (rawChar && rawChar.data && rawChar.data.characters) ? rawChar.data : rawChar;
+      } catch (e) {
+        console.warn('[GameCanvas] 加载 character-manifest 失败，使用 procedural 保底:', e.message);
+      }
+    }
+
     const mapBundle = await loadMapBundle({
       mapId: gameplayConfig.startMapId,
       gameplayConfig
@@ -87,6 +110,8 @@ onMounted(async () => {
     gameApp = createGameApp({
       canvas,
       gameplayConfig,
+      tileManifest,
+      characterManifest,
       mapBundleLoader: ({ mapId }) => loadMapBundle({ mapId, gameplayConfig }),
       initialMapBundle: mapBundle,
       onStatusChange: (status) => emit('status-change', status),

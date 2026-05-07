@@ -7,7 +7,7 @@ import { createRenderer } from "./renderer.js";
  * 游戏运行时
  * 管理场景状态、输入、移动、地图切换、远程玩家
  */
-export function createGameApp({ canvas, gameplayConfig, mapBundleLoader, initialMapBundle, onStatusChange, onActionZone, onPlayerMove, onMapChange }) {
+export function createGameApp({ canvas, gameplayConfig, mapBundleLoader, initialMapBundle, tileManifest, characterManifest, onStatusChange, onActionZone, onPlayerMove, onMapChange }) {
   let scene = createScene(initialMapBundle);
   let lastFrameTime = performance.now();
   let hoverTile = null;
@@ -33,7 +33,9 @@ export function createGameApp({ canvas, gameplayConfig, mapBundleLoader, initial
     const projection = createProjection(mapModel.grid);
     const renderer = createRenderer({
       canvas, mapModel, projection,
-      visualConfig: gameplayConfig.visuals
+      visualConfig: gameplayConfig.visuals,
+      tileManifest,
+      characterManifest
     });
     const player = createPlayerState(mapModel, gameplayConfig);
     const dummies = createDummyActors(mapBundle.mapConfig, gameplayConfig);
