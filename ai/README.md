@@ -18,6 +18,8 @@
   AI 美术素材协作指南。素材清单、提示词模板、生成流程、注册步骤。其他 AI 模型接手素材生成时先读这个。
 - `M1_CHECKLIST.md`
   M1 配置基线回归检查清单。
+- `M2_BLUEPRINT_ACCEPTANCE.md`
+  M2 蓝图主城验收文档。记录选中的主城蓝图、POI 映射、当前可玩链路、剩余调优项。
 - `SESSION_SUMMARY.md`
   每次完成阶段性工作后的会话总结。新 AI 接手时先读这个，再读 STATUS.md。
 

@@ -1,6 +1,13 @@
 {
-  "startMapId": "town_square",
+  "startMapId": "city_blueprint",
   "mapFiles": {
+    "city_blueprint": "/api/maps/city_blueprint",
+    "school_interior": "/api/maps/school_interior",
+    "restaurant_interior": "/api/maps/restaurant_interior",
+    "mine_interior": "/api/maps/mine_interior",
+    "fishing_pier": "/api/maps/fishing_pier",
+    "hospital_interior": "/api/maps/hospital_interior",
+    "convenience_store_interior": "/api/maps/convenience_store_interior",
     "town_square": "/api/maps/town_square",
     "house_01_interior": "/api/maps/house_01_interior"
   },

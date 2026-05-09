@@ -1,13 +1,13 @@
 export const TILE = {
+  GROUND: "ground",
+  WALL: "wall",
   GRASS: "grass",
-  ROAD: "road",
-  INTERIOR: "interior",
-  BUILDING: "building",
-  DOOR: "door"
+  ROAD: "ground",
+  INTERIOR: "ground",
+  BUILDING: "wall",
+  DOOR: "wall"
 };
 
 export const WALKABLE_TILES = new Set([
-  TILE.ROAD,
-  TILE.INTERIOR,
-  TILE.DOOR
+  TILE.GROUND
 ]);

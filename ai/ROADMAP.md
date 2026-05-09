@@ -34,7 +34,7 @@
 
 ## M2 美术资源基线 🔄
 
-目标：建立资源模块化与配置化方案，不再把视觉规则散落在渲染代码中。
+目标：建立资源模块化与配置化方案，并交付一版可在主城蓝图上验收的前端可玩地图。
 
 当前状态：进行中
 
@@ -46,25 +46,78 @@
 - 已新增 `GET /api/meta/tile-manifest` 服务端接口
 - `renderer.js` 已切换为 manifest 驱动：sprite 优先 + procedural fallback
 - `GameCanvas.vue` → `game-app.js` → `renderer.js` 加载链路已接线
+- 已新增主城蓝图地图模式：
+  - 背景图直出
+  - 隐藏逻辑网格
+  - POI 入口标记
+  - 入口传送到室内图
+- 已接入主城蓝图图：
+  - `client/public/assets/maps/city-main-blueprint.png`
+  - `game-config/generated/maps/city_blueprint.json`
+- 已新增首批 POI 室内图：
+  - `school_interior`
+  - `restaurant_interior`
+  - `mine_interior`
+  - `fishing_pier`
+  - `hospital_interior`
+  - `convenience_store_interior`
+- 已新增独立碰撞层能力：
+  - 运行时优先读 `collisionMask`
+  - 地图编辑器可切换到碰撞层刷可走/阻挡
+  - 蓝图地图编辑器可直接显示背景图并校准碰撞
+- 蓝图地图寻路已允许斜向移动，降低道路透视不一致时的别扭感
+- 已确认下一步素材接入顺序：
+  1. `isometric` 图集室内试点拆分
+  2. `Icons_no_background` 第一批图标接入
+  3. 按试点结果决定是否补最小渲染增强（`spriteScale` 或离线放大）
+- 已完成最小渲染增强：
+  - `renderer.js` 支持 `spriteScale`
+  - `32x32` 切片可直接按倍数放大绘制
+- 已完成室内试点第一批接入：
+  - `interior_floor_beige_01`
+  - `interior_wall_white_01`
+  - 已挂到 `ground / wall` 两类 tile 上
+- 已统一 tile 语义：
+  - `ground`
+  - `wall`
+  - `grass`
+- 已移除门语义，入口统一由 portal 表现
+- 已校准室内图出口坐标：
+  - 全部 6 个 interior map 出口已对齐 city_blueprint 对应入口附近
+  - 全部 12 个 portal/exit 点已通过路径连通性验证
+- 已完成 `Icons_no_background` 评估：
+  - 共 148 个图标（8 类），适合 M5/M6 装备系统
+  - **不在 M3 引入**，当前项目已有足够的基础图标
+- 已新增 `grass_iso_01` 草地 sprite 替换（32x32, spriteScale:3）
 
 待完成：
 
-- [ ] 角色/NPC 渲染配置化（actor-manifest.json）
-- [ ] 建筑独立渲染配置化（与 tile 解耦）
-- [ ] 导入首批 sprite 资源并验证 drawImage 链路
-- [ ] 更新 M1_CHECKLIST 加入 visual 回归项
+- [x] 角色/NPC 渲染配置化（actor-manifest.json）
+- [x] 主城蓝图 POI 坐标与隐藏网格继续校准（出口坐标已对齐，连通性已验证）
+- [x] `city_blueprint` 的 `collisionMask` 路径连通性验证（全部 portal/exit 可到达）
+- [x] 按 `pic_resource/isometric/SPLIT_PLAN.md` 完成第一批室内试点拆分
+- [x] 评估 `Icons_no_background` → 结论：留给 M5/M6 装备系统
+- [ ] 进游戏验 `school_interior / restaurant_interior` 的室内替换效果
+- [ ] `city_blueprint` 的 `collisionMask` 与背景图实际道路的精确对齐（需人工对照校准）
+- [ ] 医院 / 商店对应的恢复 / 商店玩法在后续里程碑接线（M3）
+- [ ] 更新 M2 验收记录与回归项
 
 交付物：
 
 - 美术资源规范文档 ✅
 - 资源目录规范 ✅
 - `asset manifest` 结构 ✅
-- 最小可运行示例：地块配置化 ✅（sprite 链路待资源就位后验证）
+- 最小可运行示例：地块配置化 ✅（sprite 链路已就位）
+- 主城蓝图地图模式 ✅
+- 主城 POI → 室内图传送链路 ✅（出口入口已对齐）
+- 独立碰撞层与地图编辑器碰撞刷子 ✅
 
 验收标准：
 
 - 前端至少能通过配置切换一套地块或建筑资源 ✅（改 tile-manifest.json 颜色即可验证）
 - 新增资源时无需改渲染核心逻辑 ✅（改 manifest 即可）
+- 可以直接进入主城蓝图图验收，并完成"走到点 → 进室内 → 触发行为"的最小链路 🔄（代码链路已验证，待视觉验收）
+- 可以在地图编辑器里直接校准蓝图地图的碰撞区域，而不是手改 JSON 🔄（编辑器已支持，待人工对照背景图校准）
 
 ## M3 核心玩法闭环
 

@@ -56,7 +56,11 @@ function errorHandler(err, req, _res, _next) {
 
   // 未知异常：记录日志，返回 500
   console.error(`[Error] ${req.method} ${req.path}:`, err);
-  return fail(_res, '服务器内部错误', 500);
+  // 开发模式下返回真实错误信息，便于前端调试
+  const devMessage = process.env.NODE_ENV !== 'production'
+    ? `${err.message || 'Unknown error'}`
+    : '服务器内部错误';
+  return fail(_res, devMessage, 500);
 }
 
 module.exports = { errorHandler, AppError };

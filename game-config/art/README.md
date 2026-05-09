@@ -36,7 +36,7 @@ game-config/art/                  ← 资源配置（独立于 client/、server/
 
 当前网格参数：`tileWidth=96`, `tileHeight=48`, `blockHeight=54`
 
-#### 地面 tile（grass / road / interior）
+#### 地面 tile（grass / ground）
 
 ```
 渲染方式：菱形 diamond，从 tile 中心向上下各 24px，向左右各 48px
@@ -56,7 +56,7 @@ game-config/art/                  ← 资源配置（独立于 client/、server/
         ▼ (centerX, centerY+24)
 ```
 
-#### 建筑 / 设施（building / door）
+#### 墙体 / 阻挡块（wall）
 
 ```
 渲染方式：立方体 block，从 tile 中心向上延伸 blockHeight 像素
@@ -251,6 +251,7 @@ $slices = @(
 | `height` | number | 是 | 图片实际高度 (px) |
 | `anchor.x` | 0~1 | 是 | 水平锚点，0=左 0.5=中 1=右 |
 | `anchor.y` | 0~1 | 是 | 垂直锚点，0=上 0.5=中 1=下 |
+| `spriteScale` | number | 否 | 运行时缩放倍数，默认 `1`。例如 `32x32` tile 可配 `3` 按像素风放大到 `96x96` 绘制 |
 | `frames` | number | 否 | 动画帧数（如有时） |
 | `frameWidth` | number | 否 | 单帧宽度（spritesheet 时） |
 
@@ -324,8 +325,8 @@ tile-manifest 中每个 tile 可配置：
 
 | mode | 适用 tile | colors 字段 | 说明 |
 |------|-----------|-------------|------|
-| `diamond` | grass, road, interior | `fill`, `stroke`, `highlight`(可选) | 菱形平面 |
-| `block` | building, door | `top`, `left`, `right` | 立方体三面 |
+| `diamond` | grass, ground | `fill`, `stroke`, `highlight`(可选) | 菱形平面 |
+| `block` | wall | `top`, `left`, `right` | 立方体三面 |
 
 ---
 

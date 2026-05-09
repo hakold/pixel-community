@@ -14,6 +14,16 @@ const regenService = require('./services/regenService');
 // 全局 Redis 实例引用（后续模块通过此处获取）
 let redis = null;
 
+// ---- 全局异常兜底，防止未处理异常导致进程崩溃 ----
+process.on('unhandledRejection', (reason) => {
+  console.error('[Process] 未处理的 Promise 拒绝:', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('[Process] 未捕获的异常:', err);
+  // 给进程 3 秒记录日志后退出，由 node --watch 或外部守护进程重启
+  setTimeout(() => process.exit(1), 3000);
+});
+
 /**
  * 启动服务
  */
@@ -22,6 +32,18 @@ async function start() {
   const configDir = getConfigDir();
   configManager.init(configDir);
   console.log(`[Server] 配置管理器已初始化: ${configDir}`);
+
+  // 验证关键配置已加载
+  const gameConfig = configManager.get('game');
+  if (!gameConfig) {
+    console.error('[Server] 致命错误: game.json 未加载，请检查配置目录');
+    process.exit(1);
+  }
+  if (!gameConfig.player || !gameConfig.player.initialLifeAttributes) {
+    console.error('[Server] 致命错误: game.json 缺少 player.initialLifeAttributes 字段');
+    process.exit(1);
+  }
+  console.log('[Server] 关键配置验证通过');
 
   // 1. 连接 MongoDB
   await connectMongoDB();

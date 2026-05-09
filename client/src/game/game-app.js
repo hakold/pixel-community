@@ -129,7 +129,8 @@ export function createGameApp({ canvas, gameplayConfig, mapBundleLoader, initial
     const path = findPath({
       startX: dummy.tileX, startY: dummy.tileY,
       targetX: target.x, targetY: target.y,
-      isWalkable: (x, y) => scene.mapModel.isWalkable(x, y)
+      isWalkable: (x, y) => scene.mapModel.isWalkable(x, y),
+      allowDiagonal: scene.mapModel.renderMode === "blueprint"
     });
     if (path) dummy.path = path;
   }
@@ -176,6 +177,7 @@ export function createGameApp({ canvas, gameplayConfig, mapBundleLoader, initial
       const zone = scene.mapModel.findActionZoneAt(hoverTile.x, hoverTile.y);
       let parts = [`(${hoverTile.x}, ${hoverTile.y}) ${tileType}`];
       if (zone) parts.push(`[${zone.label}]`);
+      if (portal?.label) parts.push(`[${portal.label}]`);
       if (portal) parts.push(`→ ${portal.targetMapId}`);
       status.hoverTile = parts.join(" ");
     } else {
@@ -197,7 +199,8 @@ export function createGameApp({ canvas, gameplayConfig, mapBundleLoader, initial
     const path = findPath({
       startX: scene.player.tileX, startY: scene.player.tileY,
       targetX: tile.x, targetY: tile.y,
-      isWalkable: (x, y) => scene.mapModel.isWalkable(x, y)
+      isWalkable: (x, y) => scene.mapModel.isWalkable(x, y),
+      allowDiagonal: scene.mapModel.renderMode === "blueprint"
     });
     if (!path) {
       status.pathInfo = "该格子不可到达";
@@ -333,6 +336,6 @@ export function createGameApp({ canvas, gameplayConfig, mapBundleLoader, initial
 
   function getPortalHintText() {
     if (scene.mapModel.portals.length === 0) return "当前地图没有配置入口";
-    return "入口: " + scene.mapModel.portals.map((p) => `${p.id} (${p.x},${p.y})`).join(", ");
+    return "入口: " + scene.mapModel.portals.map((p) => `${p.label ?? p.id} (${p.x},${p.y})`).join(", ");
   }
 }

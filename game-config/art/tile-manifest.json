@@ -5,32 +5,22 @@
     "grass": {
       "layer": "ground",
       "anchor": { "x": 0.5, "y": 0.5 },
-      "sprite": "/assets/sprites/tiles/grass_01.png",
+      "sprite": "/assets/sprites/tiles/grass_iso_01.png",
+      "spriteScale": 3,
       "render": {
         "mode": "diamond",
         "colors": {
-          "fill": "#97c977",
+          "fill": "#88c05d",
           "stroke": "rgba(53, 85, 33, 0.2)",
           "highlight": "rgba(255,255,255,0.03)"
         }
       }
     },
-    "road": {
+    "ground": {
       "layer": "ground",
       "anchor": { "x": 0.5, "y": 0.5 },
-      "sprite": "/assets/sprites/tiles/road_stone.png",
-      "render": {
-        "mode": "diamond",
-        "colors": {
-          "fill": "#e6d8bc",
-          "stroke": "rgba(102, 84, 61, 0.18)"
-        }
-      }
-    },
-    "interior": {
-      "layer": "ground",
-      "anchor": { "x": 0.5, "y": 0.5 },
-      "sprite": "/assets/sprites/tiles/interior_wood.png",
+      "sprite": "/assets/sprites/tiles/interior_floor_beige_01.png",
+      "spriteScale": 3,
       "render": {
         "mode": "diamond",
         "colors": {
@@ -39,29 +29,17 @@
         }
       }
     },
-    "building": {
+    "wall": {
       "layer": "raised",
       "anchor": { "x": 0.5, "y": 1.0 },
-      "sprite": "/assets/sprites/buildings/mine.png",
+      "sprite": "/assets/sprites/buildings/interior_wall_white_01.png",
+      "spriteScale": 3,
       "render": {
         "mode": "block",
         "colors": {
-          "top": "#b8795a",
-          "left": "#8f563f",
-          "right": "#744130"
-        }
-      }
-    },
-    "door": {
-      "layer": "raised",
-      "anchor": { "x": 0.5, "y": 1.0 },
-      "sprite": "/assets/sprites/buildings/door_01.png",
-      "render": {
-        "mode": "block",
-        "colors": {
-          "top": "#d8c4a0",
-          "left": "#9a7a5b",
-          "right": "#7d5f44"
+          "top": "#d7dbe1",
+          "left": "#aeb5bf",
+          "right": "#9199a5"
         }
       }
     }

@@ -2,8 +2,31 @@
   "version": "1.0",
   "description": "Sprite asset registry. 每加入一个新 sprite 就在这里登记一条。",
   "sprites": {
-    "tiles": {},
-    "buildings": {},
+    "tiles": {
+      "grass_iso_01": {
+        "path": "/assets/sprites/tiles/grass_iso_01.png",
+        "width": 32,
+        "height": 32,
+        "anchor": { "x": 0.5, "y": 0.5 },
+        "spriteScale": 3
+      },
+      "interior_floor_beige_01": {
+        "path": "/assets/sprites/tiles/interior_floor_beige_01.png",
+        "width": 32,
+        "height": 32,
+        "anchor": { "x": 0.5, "y": 0.5 },
+        "spriteScale": 3
+      }
+    },
+    "buildings": {
+      "interior_wall_white_01": {
+        "path": "/assets/sprites/buildings/interior_wall_white_01.png",
+        "width": 32,
+        "height": 32,
+        "anchor": { "x": 0.5, "y": 1.0 },
+        "spriteScale": 3
+      }
+    },
     "characters": {},
     "icons": {}
   },

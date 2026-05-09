@@ -13,8 +13,15 @@ export function createMapModel(rawConfig) {
     tileHeight: rawConfig.grid.tileHeight,
     blockHeight: rawConfig.grid.blockHeight,
     originOffsetX: rawConfig.grid.originOffsetX,
-    originOffsetY: rawConfig.grid.originOffsetY
+    originOffsetY: rawConfig.grid.originOffsetY,
+    projectionType: rawConfig.grid.projectionType ?? (rawConfig.renderMode === "blueprint" ? "orthogonal" : "isometric")
   };
+  const collisionMask = normalizeCollisionMask({
+    rawMask: rawConfig.collisionMask,
+    width: grid.width,
+    height: grid.height,
+    tiles
+  });
 
   // 构建行为区查找表 (tileKey → zone)
   const zoneLookup = new Map();
@@ -28,8 +35,11 @@ export function createMapModel(rawConfig) {
   return {
     mapId: rawConfig.mapId,
     name: rawConfig.name,
+    renderMode: rawConfig.renderMode ?? "isometric",
+    background: rawConfig.background ?? null,
     grid,
     player: rawConfig.player,
+    collisionMask,
     portals: rawConfig.portals ?? [],
     dummies: rawConfig.dummies ?? [],
     actionZones,
@@ -41,8 +51,13 @@ export function createMapModel(rawConfig) {
       if (!this.isInsideBounds(x, y)) return null;
       return tiles[y][x];
     },
+    isBlocked(x, y) {
+      if (!this.isInsideBounds(x, y)) return true;
+      if (!collisionMask) return !WALKABLE_TILES.has(this.getTile(x, y));
+      return collisionMask[y][x] === 1;
+    },
     isWalkable(x, y) {
-      return WALKABLE_TILES.has(this.getTile(x, y));
+      return !this.isBlocked(x, y);
     },
     findPortalAt(x, y) {
       return this.portals.find((portal) => portal.x === x && portal.y === y) ?? null;
@@ -56,10 +71,37 @@ export function createMapModel(rawConfig) {
 function normalizeLegend(rawLegend) {
   return {
     ...(rawLegend ?? {}),
+    ground: TILE.GROUND,
+    wall: TILE.WALL,
     grass: TILE.GRASS,
-    road: TILE.ROAD,
-    interior: TILE.INTERIOR,
-    building: TILE.BUILDING,
-    door: TILE.DOOR
+    road: TILE.GROUND,
+    interior: TILE.GROUND,
+    building: TILE.WALL,
+    door: TILE.WALL
   };
+}
+
+function normalizeCollisionMask({ rawMask, width, height, tiles }) {
+  if (!rawMask) {
+    return buildCollisionMaskFromTiles({ width, height, tiles });
+  }
+
+  return Array.from({ length: height }, (_, y) => {
+    const row = rawMask[y];
+    if (typeof row === "string") {
+      return row
+        .slice(0, width)
+        .padEnd(width, "1")
+        .split("")
+        .map((cell) => (cell === "0" ? 0 : 1));
+    }
+
+    return Array.from({ length: width }, (_, x) => (Number(row?.[x]) === 0 ? 0 : 1));
+  });
+}
+
+function buildCollisionMaskFromTiles({ width, height, tiles }) {
+  return Array.from({ length: height }, (_, y) =>
+    Array.from({ length: width }, (_, x) => (WALKABLE_TILES.has(tiles[y]?.[x]) ? 0 : 1))
+  );
 }

@@ -242,7 +242,12 @@ async function settleOfflineAction(playerId, lastLogoutAt) {
 
   // 最大离线结算周期数
   const config = getActionConfig(task.actionType, task.actionId);
-  const maxCycles = getGameConfig().action.offlineMaxCycles;
+  const gameConfig = getGameConfig();
+  if (!gameConfig) {
+    console.error('[Action] 离线结算异常: getGameConfig 返回 null');
+    return null;
+  }
+  const maxCycles = gameConfig.action.offlineMaxCycles;
   const cycles = config
     ? Math.min(maxCycles, Math.floor(elapsedSeconds / task.duration))
     : 0;

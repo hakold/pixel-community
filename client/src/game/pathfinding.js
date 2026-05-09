@@ -1,13 +1,18 @@
 /**
  * BFS 寻路 — 每格同权，适合小地图原型阶段
  */
-export function findPath({ startX, startY, targetX, targetY, isWalkable }) {
+export function findPath({ startX, startY, targetX, targetY, isWalkable, allowDiagonal = false }) {
   if (!isWalkable(targetX, targetY)) return null;
 
   const directions = [
     { x: 1, y: 0 }, { x: -1, y: 0 },
     { x: 0, y: 1 }, { x: 0, y: -1 }
   ];
+  const diagonalDirections = [
+    { x: 1, y: 1 }, { x: 1, y: -1 },
+    { x: -1, y: 1 }, { x: -1, y: -1 }
+  ];
+  const allDirections = allowDiagonal ? directions.concat(diagonalDirections) : directions;
 
   const queue = [{ x: startX, y: startY }];
   const visited = new Set([`${startX},${startY}`]);
@@ -18,11 +23,16 @@ export function findPath({ startX, startY, targetX, targetY, isWalkable }) {
     if (current.x === targetX && current.y === targetY) {
       return rebuildPath({ parents, startX, startY, targetX, targetY });
     }
-    for (const d of directions) {
+    for (const d of allDirections) {
       const nx = current.x + d.x;
       const ny = current.y + d.y;
       const key = `${nx},${ny}`;
       if (visited.has(key) || !isWalkable(nx, ny)) continue;
+      if (Math.abs(d.x) === 1 && Math.abs(d.y) === 1) {
+        const sideA = isWalkable(current.x + d.x, current.y);
+        const sideB = isWalkable(current.x, current.y + d.y);
+        if (!sideA && !sideB) continue;
+      }
       visited.add(key);
       parents.set(key, `${current.x},${current.y}`);
       queue.push({ x: nx, y: ny });
